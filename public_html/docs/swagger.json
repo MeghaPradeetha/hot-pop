@@ -1,0 +1,3909 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "HOT POP API",
+        "version": "1.0.0.20251217"
+    },
+    "host": "pr579-milf-and-dilf-website.test",
+    "schemes": [
+        "https"
+    ],
+    "basePath": "\/api\/v1",
+    "paths": {
+        "\/register": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Register",
+                "consumes": [
+                    "application\/json",
+                    "application\/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application\/json"
+                ],
+                "operationId": "auth_post_register",
+                "description": "This endpoint registers a user.If you need to update a profile image, upload the profile image in thebackground using `\/avatar` endpoint.",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "required": true,
+                        "description": "`application\/json`",
+                        "type": "string"
+                    },
+                    {
+                        "name": "device_id",
+                        "in": "formData",
+                        "required": true,
+                        "description": "Unique ID of the device",
+                        "type": "string"
+                    },
+                    {
+                        "name": "device_type",
+                        "in": "formData",
+                        "required": true,
+                        "description": "Type of the device `APPLE` or `ANDROID`",
+                        "type": "string"
+                    },
+                    {
+                        "name": "device_push_token",
+                        "in": "formData",
+                        "required": false,
+                        "description": "Unique push token for the device",
+                        "type": "string"
+                    },
+                    {
+                        "name": "apn_key_token",
+                        "in": "formData",
+                        "required": false,
+                        "description": "nique apn token for the device",
+                        "type": "string"
+                    },
+                    {
+                        "name": "email",
+                        "in": "formData",
+                        "required": true,
+                        "description": "Email address of user",
+                        "type": "string"
+                    },
+                    {
+                        "name": "password",
+                        "in": "formData",
+                        "required": true,
+                        "description": "Password. Must be at least 8 characters.",
+                        "type": "string"
+                    },
+                    {
+                        "name": "password_confirmation",
+                        "in": "formData",
+                        "required": true,
+                        "description": "Confirm password. Must be at least 8 characters.",
+                        "type": "string"
+                    }
+                ],
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#\/definitions\/AuthRegisterResponse"
+                        },
+                        "description": "AuthRegisterResponse"
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorUnauthorized"
+                        },
+                        "description": "Authentication failed"
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorAccessDenied"
+                        },
+                        "description": "Access denied"
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiError"
+                        },
+                        "description": "Generic API error. Check `message` for more information."
+                    }
+                }
+            }
+        },
+        "\/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Login",
+                "consumes": [
+                    "application\/json",
+                    "application\/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application\/json"
+                ],
+                "operationId": "auth_post_login",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "required": true,
+                        "description": "`application\/json`",
+                        "type": "string"
+                    },
+                    {
+                        "name": "device_id",
+                        "in": "formData",
+                        "required": true,
+                        "description": "Unique ID of the device",
+                        "type": "string"
+                    },
+                    {
+                        "name": "device_type",
+                        "in": "formData",
+                        "required": true,
+                        "description": "Type of the device `APPLE` or `ANDROID`",
+                        "type": "string"
+                    },
+                    {
+                        "name": "device_push_token",
+                        "in": "formData",
+                        "required": false,
+                        "description": "Unique push token for the device",
+                        "type": "string"
+                    },
+                    {
+                        "name": "apn_key_token",
+                        "in": "formData",
+                        "required": false,
+                        "description": "Unique apn token for the device",
+                        "type": "string"
+                    },
+                    {
+                        "name": "email",
+                        "in": "formData",
+                        "required": true,
+                        "description": "Email",
+                        "type": "string"
+                    },
+                    {
+                        "name": "password",
+                        "in": "formData",
+                        "required": true,
+                        "description": "Password",
+                        "type": "string"
+                    }
+                ],
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#\/definitions\/AuthLoginResponse"
+                        },
+                        "description": "AuthLoginResponse"
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorUnauthorized"
+                        },
+                        "description": "Authentication failed"
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorAccessDenied"
+                        },
+                        "description": "Access denied"
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiError"
+                        },
+                        "description": "Generic API error. Check `message` for more information."
+                    }
+                }
+            }
+        },
+        "\/password\/email": {
+            "post": {
+                "tags": [
+                    "ForgotPassword"
+                ],
+                "summary": "Reset Password",
+                "consumes": [
+                    "application\/json",
+                    "application\/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application\/json"
+                ],
+                "operationId": "forgotpassword_post_reset_password",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "required": true,
+                        "description": "`application\/json`",
+                        "type": "string"
+                    },
+                    {
+                        "name": "email",
+                        "in": "formData",
+                        "required": true,
+                        "description": "Email",
+                        "type": "string"
+                    }
+                ],
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#\/definitions\/SuccessResponse"
+                        },
+                        "description": "SuccessResponse"
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorUnauthorized"
+                        },
+                        "description": "Authentication failed"
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorAccessDenied"
+                        },
+                        "description": "Access denied"
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiError"
+                        },
+                        "description": "Generic API error. Check `message` for more information."
+                    }
+                }
+            }
+        },
+        "\/verify-email\/verify": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Email Verification",
+                "consumes": [
+                    "application\/json",
+                    "application\/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application\/json"
+                ],
+                "operationId": "auth_post_email_verification",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "code",
+                        "in": "formData",
+                        "required": true,
+                        "description": "Verification Code",
+                        "type": "string"
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "required": true,
+                        "description": "Set to `application\/json`",
+                        "type": "string"
+                    }
+                ],
+                "security": [
+                    {
+                        "apiKey": []
+                    },
+                    {
+                        "accessToken": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#\/definitions\/AuthEmailVerificationResponse"
+                        },
+                        "description": "AuthEmailVerificationResponse"
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorUnauthorized"
+                        },
+                        "description": "Authentication failed"
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorAccessDenied"
+                        },
+                        "description": "Access denied"
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiError"
+                        },
+                        "description": "Generic API error. Check `message` for more information."
+                    }
+                }
+            }
+        },
+        "\/resend-code": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Resend Verification Code",
+                "consumes": [
+                    "application\/json",
+                    "application\/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application\/json"
+                ],
+                "operationId": "auth_get_resend_verification_code",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "required": true,
+                        "description": "Set to `application\/json`",
+                        "type": "string"
+                    }
+                ],
+                "security": [
+                    {
+                        "apiKey": []
+                    },
+                    {
+                        "accessToken": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#\/definitions\/SuccessResponse"
+                        },
+                        "description": "SuccessResponse"
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorUnauthorized"
+                        },
+                        "description": "Authentication failed"
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorAccessDenied"
+                        },
+                        "description": "Access denied"
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiError"
+                        },
+                        "description": "Generic API error. Check `message` for more information."
+                    }
+                }
+            }
+        },
+        "\/logout": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Logout",
+                "consumes": [
+                    "application\/json",
+                    "application\/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application\/json"
+                ],
+                "operationId": "auth_get_logout",
+                "description": "Logout the user from current device",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "required": true,
+                        "description": "Set to `application\/json`",
+                        "type": "string"
+                    }
+                ],
+                "security": [
+                    {
+                        "apiKey": []
+                    },
+                    {
+                        "accessToken": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#\/definitions\/SuccessResponse"
+                        },
+                        "description": "SuccessResponse"
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorUnauthorized"
+                        },
+                        "description": "Authentication failed"
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorAccessDenied"
+                        },
+                        "description": "Access denied"
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiError"
+                        },
+                        "description": "Generic API error. Check `message` for more information."
+                    }
+                }
+            }
+        },
+        "\/profile": {
+            "get": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "My Profile",
+                "consumes": [
+                    "application\/json",
+                    "application\/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application\/json"
+                ],
+                "operationId": "profile_get_my_profile",
+                "description": "Get currently logged in user's profile",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "required": true,
+                        "description": "Set to `application\/json`",
+                        "type": "string"
+                    }
+                ],
+                "security": [
+                    {
+                        "apiKey": []
+                    },
+                    {
+                        "accessToken": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ProfileMyProfileResponse"
+                        },
+                        "description": "ProfileMyProfileResponse"
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorUnauthorized"
+                        },
+                        "description": "Authentication failed"
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorAccessDenied"
+                        },
+                        "description": "Access denied"
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiError"
+                        },
+                        "description": "Generic API error. Check `message` for more information."
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Update My Profile",
+                "consumes": [
+                    "application\/json",
+                    "application\/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application\/json"
+                ],
+                "operationId": "profile_put_update_my_profile",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "first_name",
+                        "in": "formData",
+                        "required": true,
+                        "description": "First name",
+                        "type": "string"
+                    },
+                    {
+                        "name": "last_name",
+                        "in": "formData",
+                        "required": false,
+                        "description": "Last name",
+                        "type": "string"
+                    },
+                    {
+                        "name": "email",
+                        "in": "formData",
+                        "required": true,
+                        "description": "Email",
+                        "type": "string"
+                    },
+                    {
+                        "name": "phone",
+                        "in": "formData",
+                        "required": false,
+                        "description": "Phone",
+                        "type": "string"
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "required": true,
+                        "description": "Set to `application\/json`",
+                        "type": "string"
+                    }
+                ],
+                "security": [
+                    {
+                        "apiKey": []
+                    },
+                    {
+                        "accessToken": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ProfileUpdateMyProfileResponse"
+                        },
+                        "description": "ProfileUpdateMyProfileResponse"
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorUnauthorized"
+                        },
+                        "description": "Authentication failed"
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorAccessDenied"
+                        },
+                        "description": "Access denied"
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiError"
+                        },
+                        "description": "Generic API error. Check `message` for more information."
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Delete My Account",
+                "consumes": [
+                    "application\/json",
+                    "application\/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application\/json"
+                ],
+                "operationId": "profile_delete_delete_my_account",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "required": true,
+                        "description": "Set to `application\/json`",
+                        "type": "string"
+                    }
+                ],
+                "security": [
+                    {
+                        "apiKey": []
+                    },
+                    {
+                        "accessToken": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#\/definitions\/SuccessResponse"
+                        },
+                        "description": "SuccessResponse"
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorUnauthorized"
+                        },
+                        "description": "Authentication failed"
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorAccessDenied"
+                        },
+                        "description": "Access denied"
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiError"
+                        },
+                        "description": "Generic API error. Check `message` for more information."
+                    }
+                }
+            }
+        },
+        "\/avatar": {
+            "post": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Update My Avatar",
+                "consumes": [
+                    "multipart\/form-data"
+                ],
+                "produces": [
+                    "application\/json"
+                ],
+                "operationId": "profile_post_update_my_avatar",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "image",
+                        "in": "formData",
+                        "required": true,
+                        "description": "Image",
+                        "type": "file"
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "required": true,
+                        "description": "Set to `application\/json`",
+                        "type": "string"
+                    }
+                ],
+                "security": [
+                    {
+                        "apiKey": []
+                    },
+                    {
+                        "accessToken": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ProfileUpdateMyAvatarResponse"
+                        },
+                        "description": "ProfileUpdateMyAvatarResponse"
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorUnauthorized"
+                        },
+                        "description": "Authentication failed"
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorAccessDenied"
+                        },
+                        "description": "Access denied"
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiError"
+                        },
+                        "description": "Generic API error. Check `message` for more information."
+                    }
+                }
+            }
+        },
+        "\/profile\/setup01": {
+            "post": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Profile Setup01",
+                "consumes": [
+                    "application\/json",
+                    "application\/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application\/json"
+                ],
+                "operationId": "profile_post_profile_setup01",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "formData",
+                        "required": true,
+                        "description": "Name",
+                        "type": "string"
+                    },
+                    {
+                        "name": "last_name",
+                        "in": "formData",
+                        "required": true,
+                        "description": "Last name",
+                        "type": "string"
+                    },
+                    {
+                        "name": "gender",
+                        "in": "formData",
+                        "required": true,
+                        "description": "Male, Female, Non-binary, Custom",
+                        "type": "string"
+                    },
+                    {
+                        "name": "want_email_notify",
+                        "in": "formData",
+                        "required": true,
+                        "description": "yes or no",
+                        "type": "string"
+                    },
+                    {
+                        "name": "age",
+                        "in": "formData",
+                        "required": true,
+                        "description": "Age",
+                        "type": "number"
+                    },
+                    {
+                        "name": "location",
+                        "in": "formData",
+                        "required": true,
+                        "description": "Location",
+                        "type": "string"
+                    },
+                    {
+                        "name": "latitude",
+                        "in": "formData",
+                        "required": true,
+                        "description": "Latitude",
+                        "type": "string"
+                    },
+                    {
+                        "name": "longitude",
+                        "in": "formData",
+                        "required": true,
+                        "description": "Longitude",
+                        "type": "string"
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "required": true,
+                        "description": "Set to `application\/json`",
+                        "type": "string"
+                    }
+                ],
+                "security": [
+                    {
+                        "apiKey": []
+                    },
+                    {
+                        "accessToken": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ProfileProfileSetup01Response"
+                        },
+                        "description": "ProfileProfileSetup01Response"
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorUnauthorized"
+                        },
+                        "description": "Authentication failed"
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorAccessDenied"
+                        },
+                        "description": "Access denied"
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiError"
+                        },
+                        "description": "Generic API error. Check `message` for more information."
+                    }
+                }
+            }
+        },
+        "\/profile\/setup02": {
+            "post": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Profile Setup Video",
+                "consumes": [
+                    "multipart\/form-data"
+                ],
+                "produces": [
+                    "application\/json"
+                ],
+                "operationId": "profile_post_profile_setup_video",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "file",
+                        "in": "formData",
+                        "required": true,
+                        "description": "file",
+                        "type": "string"
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "required": true,
+                        "description": "Set to `application\/json`",
+                        "type": "string"
+                    }
+                ],
+                "security": [
+                    {
+                        "apiKey": []
+                    },
+                    {
+                        "accessToken": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ProfileProfileSetupVideoResponse"
+                        },
+                        "description": "ProfileProfileSetupVideoResponse"
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorUnauthorized"
+                        },
+                        "description": "Authentication failed"
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorAccessDenied"
+                        },
+                        "description": "Access denied"
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiError"
+                        },
+                        "description": "Generic API error. Check `message` for more information."
+                    }
+                }
+            }
+        },
+        "\/profile\/setupImages": {
+            "post": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Profile Setup Images",
+                "consumes": [
+                    "multipart\/form-data"
+                ],
+                "produces": [
+                    "application\/json"
+                ],
+                "operationId": "profile_post_profile_setup_images",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "images",
+                        "in": "formData",
+                        "required": true,
+                        "description": "File Collection",
+                        "type": "array",
+                        "collectionFormat": "multi",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "required": true,
+                        "description": "Set to `application\/json`",
+                        "type": "string"
+                    }
+                ],
+                "security": [
+                    {
+                        "apiKey": []
+                    },
+                    {
+                        "accessToken": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ProfileProfileSetupImagesResponse"
+                        },
+                        "description": "ProfileProfileSetupImagesResponse"
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorUnauthorized"
+                        },
+                        "description": "Authentication failed"
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorAccessDenied"
+                        },
+                        "description": "Access denied"
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiError"
+                        },
+                        "description": "Generic API error. Check `message` for more information."
+                    }
+                }
+            }
+        },
+        "\/profile\/setup03": {
+            "post": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Profile Setup03",
+                "consumes": [
+                    "application\/json",
+                    "application\/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application\/json"
+                ],
+                "operationId": "profile_post_profile_setup03",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "interests",
+                        "in": "formData",
+                        "required": true,
+                        "description": "comma separated",
+                        "type": "string"
+                    },
+                    {
+                        "name": "occupation",
+                        "in": "formData",
+                        "required": true,
+                        "description": "Occupation",
+                        "type": "string"
+                    },
+                    {
+                        "name": "hometown",
+                        "in": "formData",
+                        "required": true,
+                        "description": "Hometown",
+                        "type": "string"
+                    },
+                    {
+                        "name": "height",
+                        "in": "formData",
+                        "required": true,
+                        "description": "Height",
+                        "type": "number"
+                    },
+                    {
+                        "name": "nationality",
+                        "in": "formData",
+                        "required": true,
+                        "description": "Nationality",
+                        "type": "string"
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "required": true,
+                        "description": "Set to `application\/json`",
+                        "type": "string"
+                    }
+                ],
+                "security": [
+                    {
+                        "apiKey": []
+                    },
+                    {
+                        "accessToken": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ProfileProfileSetup03Response"
+                        },
+                        "description": "ProfileProfileSetup03Response"
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorUnauthorized"
+                        },
+                        "description": "Authentication failed"
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorAccessDenied"
+                        },
+                        "description": "Access denied"
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiError"
+                        },
+                        "description": "Generic API error. Check `message` for more information."
+                    }
+                }
+            }
+        },
+        "\/profile\/setup04": {
+            "post": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Profile Setup04",
+                "consumes": [
+                    "application\/json",
+                    "application\/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application\/json"
+                ],
+                "operationId": "profile_post_profile_setup04",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "relationship_type",
+                        "in": "formData",
+                        "required": true,
+                        "description": "Relationship, Keeping it casual, Friendship, Figuring out my relationship goals",
+                        "type": "string"
+                    },
+                    {
+                        "name": "dating_intentions",
+                        "in": "formData",
+                        "required": true,
+                        "description": "Male, Female, Non-binary, All",
+                        "type": "string"
+                    },
+                    {
+                        "name": "min_age",
+                        "in": "formData",
+                        "required": true,
+                        "description": "optional",
+                        "type": "number"
+                    },
+                    {
+                        "name": "max_age",
+                        "in": "formData",
+                        "required": true,
+                        "description": "optional",
+                        "type": "number"
+                    },
+                    {
+                        "name": "like_to_have_more_childran",
+                        "in": "formData",
+                        "required": false,
+                        "description": "yes or no",
+                        "type": "string"
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "required": true,
+                        "description": "Set to `application\/json`",
+                        "type": "string"
+                    }
+                ],
+                "security": [
+                    {
+                        "apiKey": []
+                    },
+                    {
+                        "accessToken": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ProfileProfileSetup04Response"
+                        },
+                        "description": "ProfileProfileSetup04Response"
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorUnauthorized"
+                        },
+                        "description": "Authentication failed"
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorAccessDenied"
+                        },
+                        "description": "Access denied"
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiError"
+                        },
+                        "description": "Generic API error. Check `message` for more information."
+                    }
+                }
+            }
+        },
+        "\/profile\/support": {
+            "get": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Get Interest and Nationality",
+                "consumes": [
+                    "application\/json",
+                    "application\/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application\/json"
+                ],
+                "operationId": "profile_get_get_interest_and_nationality",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "required": true,
+                        "description": "Set to `application\/json`",
+                        "type": "string"
+                    }
+                ],
+                "security": [
+                    {
+                        "apiKey": []
+                    },
+                    {
+                        "accessToken": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ProfileGetInterestAndNationalityResponse"
+                        },
+                        "description": "ProfileGetInterestAndNationalityResponse"
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorUnauthorized"
+                        },
+                        "description": "Authentication failed"
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorAccessDenied"
+                        },
+                        "description": "Access denied"
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiError"
+                        },
+                        "description": "Generic API error. Check `message` for more information."
+                    }
+                }
+            }
+        },
+        "\/profile\/complete": {
+            "post": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Profile Complete",
+                "consumes": [
+                    "application\/json",
+                    "application\/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application\/json"
+                ],
+                "operationId": "profile_post_profile_complete",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "required": true,
+                        "description": "Set to `application\/json`",
+                        "type": "string"
+                    }
+                ],
+                "security": [
+                    {
+                        "apiKey": []
+                    },
+                    {
+                        "accessToken": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ProfileProfileCompleteResponse"
+                        },
+                        "description": "ProfileProfileCompleteResponse"
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorUnauthorized"
+                        },
+                        "description": "Authentication failed"
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorAccessDenied"
+                        },
+                        "description": "Access denied"
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiError"
+                        },
+                        "description": "Generic API error. Check `message` for more information."
+                    }
+                }
+            }
+        },
+        "\/profile\/show": {
+            "get": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Get Profile Details",
+                "consumes": [
+                    "application\/json",
+                    "application\/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application\/json"
+                ],
+                "operationId": "profile_get_get_profile_details",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "required": true,
+                        "description": "User ID",
+                        "type": "string"
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "required": true,
+                        "description": "Set to `application\/json`",
+                        "type": "string"
+                    }
+                ],
+                "security": [
+                    {
+                        "apiKey": []
+                    },
+                    {
+                        "accessToken": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ProfileGetProfileDetailsResponse"
+                        },
+                        "description": "ProfileGetProfileDetailsResponse"
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorUnauthorized"
+                        },
+                        "description": "Authentication failed"
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorAccessDenied"
+                        },
+                        "description": "Access denied"
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiError"
+                        },
+                        "description": "Generic API error. Check `message` for more information."
+                    }
+                }
+            }
+        },
+        "\/push-token\/update": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Push Token Update",
+                "consumes": [
+                    "application\/json",
+                    "application\/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application\/json"
+                ],
+                "operationId": "auth_post_push_token_update",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "device_push_token",
+                        "in": "formData",
+                        "required": false,
+                        "description": "Unique push token for the device",
+                        "type": "string"
+                    },
+                    {
+                        "name": "apn_key_token",
+                        "in": "formData",
+                        "required": false,
+                        "description": "Unique apn token for the device",
+                        "type": "string"
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "required": true,
+                        "description": "Set to `application\/json`",
+                        "type": "string"
+                    }
+                ],
+                "security": [
+                    {
+                        "apiKey": []
+                    },
+                    {
+                        "accessToken": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#\/definitions\/SuccessResponse"
+                        },
+                        "description": "SuccessResponse"
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorUnauthorized"
+                        },
+                        "description": "Authentication failed"
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorAccessDenied"
+                        },
+                        "description": "Access denied"
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiError"
+                        },
+                        "description": "Generic API error. Check `message` for more information."
+                    }
+                }
+            }
+        },
+        "\/password\/edit": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Update Password",
+                "consumes": [
+                    "application\/json",
+                    "application\/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application\/json"
+                ],
+                "operationId": "auth_post_update_password",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "password",
+                        "in": "formData",
+                        "required": true,
+                        "description": "Password",
+                        "type": "string"
+                    },
+                    {
+                        "name": "current_password",
+                        "in": "formData",
+                        "required": true,
+                        "description": "Current password",
+                        "type": "string"
+                    },
+                    {
+                        "name": "password_confirmation",
+                        "in": "formData",
+                        "required": true,
+                        "description": "Password confirmation",
+                        "type": "string"
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "required": true,
+                        "description": "Set to `application\/json`",
+                        "type": "string"
+                    }
+                ],
+                "security": [
+                    {
+                        "apiKey": []
+                    },
+                    {
+                        "accessToken": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#\/definitions\/SuccessResponse"
+                        },
+                        "description": "SuccessResponse"
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorUnauthorized"
+                        },
+                        "description": "Authentication failed"
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorAccessDenied"
+                        },
+                        "description": "Access denied"
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiError"
+                        },
+                        "description": "Generic API error. Check `message` for more information."
+                    }
+                }
+            }
+        },
+        "\/home": {
+            "get": {
+                "tags": [
+                    "HomeAPI"
+                ],
+                "summary": "Home",
+                "consumes": [
+                    "application\/json",
+                    "application\/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application\/json"
+                ],
+                "operationId": "homeapi_get_home",
+                "description": "Get Profile Details for match",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "required": false,
+                        "description": "Page Number",
+                        "type": "string"
+                    },
+                    {
+                        "name": "gender",
+                        "in": "query",
+                        "required": false,
+                        "description": "Male, Female, Non-binary, All",
+                        "type": "string"
+                    },
+                    {
+                        "name": "relationship_type",
+                        "in": "query",
+                        "required": false,
+                        "description": "Relationship, Keeping it casual, Friendship, Figuring out my relationship goals",
+                        "type": "string"
+                    },
+                    {
+                        "name": "dating_preference",
+                        "in": "query",
+                        "required": false,
+                        "description": "Male, Female, Non-binary, All",
+                        "type": "string"
+                    },
+                    {
+                        "name": "min_age",
+                        "in": "query",
+                        "required": false,
+                        "description": "Min age",
+                        "type": "number"
+                    },
+                    {
+                        "name": "max_age",
+                        "in": "query",
+                        "required": false,
+                        "description": "Max age",
+                        "type": "number"
+                    },
+                    {
+                        "name": "min_distance",
+                        "in": "query",
+                        "required": false,
+                        "description": "Min distance",
+                        "type": "number"
+                    },
+                    {
+                        "name": "max_distance",
+                        "in": "query",
+                        "required": false,
+                        "description": "Max distance",
+                        "type": "number"
+                    },
+                    {
+                        "name": "latitude",
+                        "in": "query",
+                        "required": false,
+                        "description": "Latitude",
+                        "type": "string"
+                    },
+                    {
+                        "name": "longitude",
+                        "in": "query",
+                        "required": false,
+                        "description": "Longitude",
+                        "type": "string"
+                    },
+                    {
+                        "name": "like_to_have_more_childran",
+                        "in": "query",
+                        "required": false,
+                        "description": "yes or no",
+                        "type": "string"
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "required": true,
+                        "description": "Set to `application\/json`",
+                        "type": "string"
+                    }
+                ],
+                "security": [
+                    {
+                        "apiKey": []
+                    },
+                    {
+                        "accessToken": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#\/definitions\/HomeAPIHomeResponse"
+                        },
+                        "description": "HomeAPIHomeResponse"
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorUnauthorized"
+                        },
+                        "description": "Authentication failed"
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorAccessDenied"
+                        },
+                        "description": "Access denied"
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiError"
+                        },
+                        "description": "Generic API error. Check `message` for more information."
+                    }
+                }
+            }
+        },
+        "\/home\/accept": {
+            "post": {
+                "tags": [
+                    "HomeAPI"
+                ],
+                "summary": "Accept Profile",
+                "consumes": [
+                    "application\/json",
+                    "application\/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application\/json"
+                ],
+                "operationId": "homeapi_post_accept_profile",
+                "description": "Accept Profile",
+                "parameters": [
+                    {
+                        "name": "preferred_user_id",
+                        "in": "formData",
+                        "required": true,
+                        "description": "Accept Profile ID",
+                        "type": "string"
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "required": true,
+                        "description": "Set to `application\/json`",
+                        "type": "string"
+                    }
+                ],
+                "security": [
+                    {
+                        "apiKey": []
+                    },
+                    {
+                        "accessToken": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#\/definitions\/SuccessResponse"
+                        },
+                        "description": "SuccessResponse"
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorUnauthorized"
+                        },
+                        "description": "Authentication failed"
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorAccessDenied"
+                        },
+                        "description": "Access denied"
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiError"
+                        },
+                        "description": "Generic API error. Check `message` for more information."
+                    }
+                }
+            }
+        },
+        "\/match-all": {
+            "get": {
+                "tags": [
+                    "HomeAPI"
+                ],
+                "summary": "Get Match Profile",
+                "consumes": [
+                    "application\/json",
+                    "application\/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application\/json"
+                ],
+                "operationId": "homeapi_get_get_match_profile",
+                "description": "Get Match Profile",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "required": true,
+                        "description": "Set to `application\/json`",
+                        "type": "string"
+                    }
+                ],
+                "security": [
+                    {
+                        "apiKey": []
+                    },
+                    {
+                        "accessToken": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#\/definitions\/HomeAPIGetMatchProfileResponse"
+                        },
+                        "description": "HomeAPIGetMatchProfileResponse"
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorUnauthorized"
+                        },
+                        "description": "Authentication failed"
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorAccessDenied"
+                        },
+                        "description": "Access denied"
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiError"
+                        },
+                        "description": "Generic API error. Check `message` for more information."
+                    }
+                }
+            }
+        },
+        "\/unmatch": {
+            "post": {
+                "tags": [
+                    "HomeAPI"
+                ],
+                "summary": "Unmatch Profile",
+                "consumes": [
+                    "application\/json",
+                    "application\/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application\/json"
+                ],
+                "operationId": "homeapi_post_unmatch_profile",
+                "description": "unmatch Profile",
+                "parameters": [
+                    {
+                        "name": "preferred_user_id",
+                        "in": "formData",
+                        "required": true,
+                        "description": "User Profile ID",
+                        "type": "string"
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "required": true,
+                        "description": "Set to `application\/json`",
+                        "type": "string"
+                    }
+                ],
+                "security": [
+                    {
+                        "apiKey": []
+                    },
+                    {
+                        "accessToken": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#\/definitions\/HomeAPIUnmatchProfileResponse"
+                        },
+                        "description": "HomeAPIUnmatchProfileResponse"
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorUnauthorized"
+                        },
+                        "description": "Authentication failed"
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorAccessDenied"
+                        },
+                        "description": "Access denied"
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiError"
+                        },
+                        "description": "Generic API error. Check `message` for more information."
+                    }
+                }
+            }
+        },
+        "\/chat": {
+            "post": {
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Send Chat Message",
+                "consumes": [
+                    "multipart\/form-data"
+                ],
+                "produces": [
+                    "application\/json"
+                ],
+                "operationId": "chat_post_send_chat_message",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "receiver_id",
+                        "in": "formData",
+                        "required": true,
+                        "description": "Message Receiver ID",
+                        "type": "number"
+                    },
+                    {
+                        "name": "message",
+                        "in": "formData",
+                        "required": false,
+                        "description": "Message",
+                        "type": "string"
+                    },
+                    {
+                        "name": "image",
+                        "in": "formData",
+                        "required": false,
+                        "description": "Image",
+                        "type": "file"
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "required": true,
+                        "description": "Set to `application\/json`",
+                        "type": "string"
+                    }
+                ],
+                "security": [
+                    {
+                        "apiKey": []
+                    },
+                    {
+                        "accessToken": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ChatSendChatMessageResponse"
+                        },
+                        "description": "ChatSendChatMessageResponse"
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorUnauthorized"
+                        },
+                        "description": "Authentication failed"
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorAccessDenied"
+                        },
+                        "description": "Access denied"
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiError"
+                        },
+                        "description": "Generic API error. Check `message` for more information."
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Delete Chat Message",
+                "consumes": [
+                    "application\/json",
+                    "application\/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application\/json"
+                ],
+                "operationId": "chat_delete_delete_chat_message",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "chat_id",
+                        "in": "formData",
+                        "required": true,
+                        "description": "Chat Message ID",
+                        "type": "number"
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "required": true,
+                        "description": "Set to `application\/json`",
+                        "type": "string"
+                    }
+                ],
+                "security": [
+                    {
+                        "apiKey": []
+                    },
+                    {
+                        "accessToken": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#\/definitions\/SuccessResponse"
+                        },
+                        "description": "SuccessResponse"
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorUnauthorized"
+                        },
+                        "description": "Authentication failed"
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorAccessDenied"
+                        },
+                        "description": "Access denied"
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiError"
+                        },
+                        "description": "Generic API error. Check `message` for more information."
+                    }
+                }
+            }
+        },
+        "\/chat\/read": {
+            "post": {
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Chat Read",
+                "consumes": [
+                    "application\/json",
+                    "application\/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application\/json"
+                ],
+                "operationId": "chat_post_chat_read",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "chat_room_id",
+                        "in": "formData",
+                        "required": true,
+                        "description": "Chat Room ID",
+                        "type": "number"
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "required": true,
+                        "description": "Set to `application\/json`",
+                        "type": "string"
+                    }
+                ],
+                "security": [
+                    {
+                        "apiKey": []
+                    },
+                    {
+                        "accessToken": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#\/definitions\/SuccessResponse"
+                        },
+                        "description": "SuccessResponse"
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorUnauthorized"
+                        },
+                        "description": "Authentication failed"
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorAccessDenied"
+                        },
+                        "description": "Access denied"
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiError"
+                        },
+                        "description": "Generic API error. Check `message` for more information."
+                    }
+                }
+            }
+        },
+        "\/chat\/users": {
+            "get": {
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Chat User List",
+                "consumes": [
+                    "application\/json",
+                    "application\/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application\/json"
+                ],
+                "operationId": "chat_get_chat_user_list",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "required": true,
+                        "description": "Set to `application\/json`",
+                        "type": "string"
+                    }
+                ],
+                "security": [
+                    {
+                        "apiKey": []
+                    },
+                    {
+                        "accessToken": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ChatChatUserListResponse"
+                        },
+                        "description": "ChatChatUserListResponse"
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorUnauthorized"
+                        },
+                        "description": "Authentication failed"
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorAccessDenied"
+                        },
+                        "description": "Access denied"
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiError"
+                        },
+                        "description": "Generic API error. Check `message` for more information."
+                    }
+                }
+            }
+        },
+        "\/chat\/list": {
+            "get": {
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Chat List",
+                "consumes": [
+                    "application\/json",
+                    "application\/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application\/json"
+                ],
+                "operationId": "chat_get_chat_list",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "chat_room_id",
+                        "in": "query",
+                        "required": true,
+                        "description": "Chat Room ID",
+                        "type": "number"
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "required": true,
+                        "description": "Page Number",
+                        "type": "number"
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "required": true,
+                        "description": "Set to `application\/json`",
+                        "type": "string"
+                    }
+                ],
+                "security": [
+                    {
+                        "apiKey": []
+                    },
+                    {
+                        "accessToken": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ChatChatListResponse"
+                        },
+                        "description": "ChatChatListResponse"
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorUnauthorized"
+                        },
+                        "description": "Authentication failed"
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorAccessDenied"
+                        },
+                        "description": "Access denied"
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiError"
+                        },
+                        "description": "Generic API error. Check `message` for more information."
+                    }
+                }
+            }
+        },
+        "\/chat\/report": {
+            "post": {
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Add Chat Report",
+                "consumes": [
+                    "application\/json",
+                    "application\/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application\/json"
+                ],
+                "operationId": "chat_post_add_chat_report",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "reported_user",
+                        "in": "formData",
+                        "required": true,
+                        "description": "User ID",
+                        "type": "number"
+                    },
+                    {
+                        "name": "reason",
+                        "in": "formData",
+                        "required": true,
+                        "description": "Reason for Report",
+                        "type": "string"
+                    },
+                    {
+                        "name": "comments",
+                        "in": "formData",
+                        "required": true,
+                        "description": "Explaination",
+                        "type": "string"
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "required": true,
+                        "description": "Set to `application\/json`",
+                        "type": "string"
+                    }
+                ],
+                "security": [
+                    {
+                        "apiKey": []
+                    },
+                    {
+                        "accessToken": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ChatAddChatReportResponse"
+                        },
+                        "description": "ChatAddChatReportResponse"
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorUnauthorized"
+                        },
+                        "description": "Authentication failed"
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorAccessDenied"
+                        },
+                        "description": "Access denied"
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiError"
+                        },
+                        "description": "Generic API error. Check `message` for more information."
+                    }
+                }
+            }
+        },
+        "\/chat\/block": {
+            "post": {
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Block Chat User",
+                "consumes": [
+                    "application\/json",
+                    "application\/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application\/json"
+                ],
+                "operationId": "chat_post_block_chat_user",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "block_user_id",
+                        "in": "formData",
+                        "required": true,
+                        "description": "Block User ID",
+                        "type": "number"
+                    },
+                    {
+                        "name": "block_status",
+                        "in": "formData",
+                        "required": true,
+                        "description": "Block Status 0 or 1",
+                        "type": "number"
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "required": true,
+                        "description": "Set to `application\/json`",
+                        "type": "string"
+                    }
+                ],
+                "security": [
+                    {
+                        "apiKey": []
+                    },
+                    {
+                        "accessToken": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#\/definitions\/SuccessResponse"
+                        },
+                        "description": "SuccessResponse"
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorUnauthorized"
+                        },
+                        "description": "Authentication failed"
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorAccessDenied"
+                        },
+                        "description": "Access denied"
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiError"
+                        },
+                        "description": "Generic API error. Check `message` for more information."
+                    }
+                }
+            }
+        },
+        "\/chat\/settings": {
+            "post": {
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Update Chat Settings",
+                "consumes": [
+                    "application\/json",
+                    "application\/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application\/json"
+                ],
+                "operationId": "chat_post_update_chat_settings",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "online_status",
+                        "in": "formData",
+                        "required": true,
+                        "description": "Online Status 0 or 1",
+                        "type": "number"
+                    },
+                    {
+                        "name": "read_receipts",
+                        "in": "formData",
+                        "required": true,
+                        "description": "Read Receipts 0 or 1",
+                        "type": "number"
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "required": true,
+                        "description": "Set to `application\/json`",
+                        "type": "string"
+                    }
+                ],
+                "security": [
+                    {
+                        "apiKey": []
+                    },
+                    {
+                        "accessToken": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ChatUpdateChatSettingsResponse"
+                        },
+                        "description": "ChatUpdateChatSettingsResponse"
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorUnauthorized"
+                        },
+                        "description": "Authentication failed"
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorAccessDenied"
+                        },
+                        "description": "Access denied"
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiError"
+                        },
+                        "description": "Generic API error. Check `message` for more information."
+                    }
+                }
+            }
+        },
+        "\/call\/token": {
+            "get": {
+                "tags": [
+                    "Token"
+                ],
+                "summary": "Genrate Token",
+                "consumes": [
+                    "application\/json",
+                    "application\/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application\/json"
+                ],
+                "operationId": "token_get_genrate_token",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "reciver_id",
+                        "in": "query",
+                        "required": true,
+                        "description": "user id",
+                        "type": "string"
+                    },
+                    {
+                        "name": "call_type",
+                        "in": "query",
+                        "required": true,
+                        "description": "audio\/video",
+                        "type": "string"
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "required": true,
+                        "description": "Set to `application\/json`",
+                        "type": "string"
+                    }
+                ],
+                "security": [
+                    {
+                        "apiKey": []
+                    },
+                    {
+                        "accessToken": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#\/definitions\/SuccessResponse"
+                        },
+                        "description": "SuccessResponse"
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorUnauthorized"
+                        },
+                        "description": "Authentication failed"
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorAccessDenied"
+                        },
+                        "description": "Access denied"
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiError"
+                        },
+                        "description": "Generic API error. Check `message` for more information."
+                    }
+                }
+            }
+        },
+        "\/call\/answer": {
+            "post": {
+                "tags": [
+                    "Call"
+                ],
+                "summary": "Answer Call",
+                "consumes": [
+                    "application\/json",
+                    "application\/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application\/json"
+                ],
+                "operationId": "call_post_answer_call",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "reciver_id",
+                        "in": "formData",
+                        "required": true,
+                        "description": "user id comma seprated array",
+                        "type": "string"
+                    },
+                    {
+                        "name": "is_accept",
+                        "in": "formData",
+                        "required": true,
+                        "description": "0\/1",
+                        "type": "string"
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "required": true,
+                        "description": "Set to `application\/json`",
+                        "type": "string"
+                    }
+                ],
+                "security": [
+                    {
+                        "apiKey": []
+                    },
+                    {
+                        "accessToken": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#\/definitions\/SuccessResponse"
+                        },
+                        "description": "SuccessResponse"
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorUnauthorized"
+                        },
+                        "description": "Authentication failed"
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorAccessDenied"
+                        },
+                        "description": "Access denied"
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiError"
+                        },
+                        "description": "Generic API error. Check `message` for more information."
+                    }
+                }
+            }
+        },
+        "\/contact-us": {
+            "post": {
+                "tags": [
+                    "Contact Us"
+                ],
+                "summary": "send mail",
+                "consumes": [
+                    "application\/json",
+                    "application\/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application\/json"
+                ],
+                "operationId": "contact_us_post_send_mail",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "message",
+                        "in": "formData",
+                        "required": true,
+                        "description": "User message",
+                        "type": "string"
+                    },
+                    {
+                        "name": "name",
+                        "in": "formData",
+                        "required": false,
+                        "description": "User Name",
+                        "type": "string"
+                    },
+                    {
+                        "name": "email",
+                        "in": "formData",
+                        "required": false,
+                        "description": "User Email",
+                        "type": "string"
+                    },
+                    {
+                        "name": "country_code",
+                        "in": "formData",
+                        "required": false,
+                        "description": "User Phone Code",
+                        "type": "string"
+                    },
+                    {
+                        "name": "phone",
+                        "in": "formData",
+                        "required": false,
+                        "description": "User Phone Number",
+                        "type": "string"
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "required": true,
+                        "description": "Set to `application\/json`",
+                        "type": "string"
+                    }
+                ],
+                "security": [
+                    {
+                        "apiKey": []
+                    },
+                    {
+                        "accessToken": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#\/definitions\/SuccessResponse"
+                        },
+                        "description": "SuccessResponse"
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorUnauthorized"
+                        },
+                        "description": "Authentication failed"
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorAccessDenied"
+                        },
+                        "description": "Access denied"
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiError"
+                        },
+                        "description": "Generic API error. Check `message` for more information."
+                    }
+                }
+            }
+        },
+        "\/settings": {
+            "get": {
+                "tags": [
+                    "Settings"
+                ],
+                "summary": "Get Settings",
+                "consumes": [
+                    "application\/json"
+                ],
+                "produces": [
+                    "application\/json"
+                ],
+                "operationId": "settings_get_get_settings",
+                "description": "Returns all app settings. Each setting value is identified by the respective key.",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "required": true,
+                        "description": "`application\/json`",
+                        "type": "string"
+                    }
+                ],
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#\/definitions\/SettingsGetSettingsResponse"
+                        },
+                        "description": "SettingsGetSettingsResponse"
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorUnauthorized"
+                        },
+                        "description": "Authentication failed"
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorAccessDenied"
+                        },
+                        "description": "Access denied"
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiError"
+                        },
+                        "description": "Generic API error. Check `message` for more information."
+                    }
+                }
+            }
+        },
+        "\/settings\/{key}": {
+            "get": {
+                "tags": [
+                    "Settings"
+                ],
+                "summary": "Get Setting",
+                "consumes": [
+                    "application\/json"
+                ],
+                "produces": [
+                    "application\/json"
+                ],
+                "operationId": "settings_get_get_setting",
+                "description": "Returns the value of a single app setting requested by key.",
+                "parameters": [
+                    {
+                        "name": "key",
+                        "in": "path",
+                        "required": true,
+                        "description": "Key of the setting",
+                        "type": "string"
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "required": true,
+                        "description": "Set to `application\/json`",
+                        "type": "string"
+                    }
+                ],
+                "security": [
+                    {
+                        "apiKey": []
+                    },
+                    {
+                        "accessToken": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#\/definitions\/SuccessResponse"
+                        },
+                        "description": "SuccessResponse"
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorUnauthorized"
+                        },
+                        "description": "Authentication failed"
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiErrorAccessDenied"
+                        },
+                        "description": "Access denied"
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#\/definitions\/ApiError"
+                        },
+                        "description": "Generic API error. Check `message` for more information."
+                    }
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "apiKey": {
+            "type": "apiKey",
+            "name": "x-api-key",
+            "in": "header",
+            "description": "API Key for application"
+        },
+        "accessToken": {
+            "type": "apiKey",
+            "name": "x-access-token",
+            "in": "header",
+            "description": "Unique user authentication token"
+        }
+    },
+    "definitions": {
+        "User": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "first_name": {
+                    "type": "string"
+                },
+                "full_name": {
+                    "type": "string"
+                },
+                "avatar2": {
+                    "type": "string"
+                },
+                "video": {
+                    "type": "string"
+                },
+                "age": {
+                    "type": "integer"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "gender": {
+                    "type": "string"
+                },
+                "subscription_plan": {
+                    "type": "string"
+                },
+                "last_name": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "profile_setup_step": {
+                    "type": "string"
+                },
+                "active_status": {
+                    "type": "string"
+                },
+                "last_active": {
+                    "type": "string"
+                },
+                "online_status": {
+                    "type": "string"
+                },
+                "read_receipts": {
+                    "type": "string"
+                },
+                "is_profile_completed": {
+                    "type": "boolean"
+                },
+                "is_email_verified": {
+                    "type": "boolean"
+                },
+                "want_email_notify": {
+                    "type": "string"
+                },
+                "personality": {
+                    "$ref": "#\/definitions\/Personality"
+                },
+                "files": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#\/definitions\/File"
+                    }
+                },
+                "chat_room": {
+                    "$ref": "#\/definitions\/ChatRoom"
+                },
+                "access_token": {
+                    "type": "string"
+                }
+            }
+        },
+        "PushNotification": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "uuid": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "badge_count": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "string"
+                },
+                "scheduled_at": {
+                    "type": "string"
+                },
+                "scheduled_timezone": {
+                    "type": "string"
+                },
+                "sent_at": {
+                    "type": "string"
+                },
+                "read_at": {
+                    "type": "string"
+                },
+                "notifiable_type": {
+                    "type": "string"
+                },
+                "notifiable_id": {
+                    "type": "string"
+                },
+                "topic": {
+                    "type": "string"
+                },
+                "apns_config": {
+                    "type": "string"
+                },
+                "android_config": {
+                    "type": "string"
+                },
+                "deleted_at": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "File": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "uuid": {
+                    "type": "string"
+                },
+                "original_filename": {
+                    "type": "string"
+                },
+                "file_url": {
+                    "type": "string"
+                },
+                "category": {
+                    "type": "string"
+                }
+            }
+        },
+        "Device": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
+                },
+                "device_id": {
+                    "type": "string"
+                },
+                "device_type": {
+                    "type": "string"
+                },
+                "device_push_token": {
+                    "type": "string"
+                },
+                "access_token": {
+                    "type": "string"
+                },
+                "access_token_expires_at": {
+                    "type": "string"
+                },
+                "latest_ip_address": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "is_subscribed_to_all_devices_topic": {
+                    "type": "boolean"
+                },
+                "is_subscribed_to_device_type_topic": {
+                    "type": "boolean"
+                },
+                "apn_key_token": {
+                    "type": "string"
+                }
+            }
+        },
+        "ProfilePreference": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
+                },
+                "preferred_user_id": {
+                    "type": "string"
+                },
+                "preference": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "ChatRoom": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "number"
+                },
+                "block_status": {
+                    "type": "string"
+                },
+                "last_message": {
+                    "type": "string"
+                },
+                "sender_id": {
+                    "type": "number"
+                },
+                "unread_message": {
+                    "type": "number"
+                },
+                "participant": {
+                    "$ref": "#\/definitions\/User"
+                },
+                "last_message_time": {
+                    "type": "string"
+                },
+                "last_message_created": {
+                    "type": "string"
+                },
+                "lastChat": {
+                    "type": "string"
+                }
+            }
+        },
+        "Setting": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "key": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "Block": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "blocked_by_user": {
+                    "type": "string"
+                },
+                "blocked_user": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "chat_room_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "Filter": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
+                },
+                "relationship_type": {
+                    "type": "string"
+                },
+                "preferences": {
+                    "type": "string"
+                },
+                "children": {
+                    "type": "string"
+                },
+                "min_age": {
+                    "type": "string"
+                },
+                "max_age": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "ChatReport": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "reason": {
+                    "type": "string"
+                },
+                "comments": {
+                    "type": "string"
+                },
+                "reported_user": {
+                    "type": "string"
+                },
+                "reported_by_user": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "Inquiry": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "submitted_id": {
+                    "type": "integer"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "SupportData": {
+            "type": "object",
+            "properties": {
+                "interests": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "nationality": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "Nationality": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "phone_code": {
+                    "type": "string"
+                },
+                "timezone": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "InterestList": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "Personality": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
+                },
+                "hometown": {
+                    "type": "string"
+                },
+                "height": {
+                    "type": "string"
+                },
+                "nationality": {
+                    "type": "string"
+                },
+                "relationship_type": {
+                    "type": "string"
+                },
+                "dating_intentions": {
+                    "type": "string"
+                },
+                "min_age": {
+                    "type": "string"
+                },
+                "max_age": {
+                    "type": "string"
+                },
+                "like_to_have_more_childran": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "occupation": {
+                    "type": "string"
+                },
+                "interests": {
+                    "type": "string"
+                }
+            }
+        },
+        "Chat": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "number"
+                },
+                "sender_id": {
+                    "type": "number"
+                },
+                "chat_room_id": {
+                    "type": "number"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "read_status": {
+                    "type": "string"
+                },
+                "send_time": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "SubscriptionPlan": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "plan_id": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "UserPicture": {
+            "type": "object"
+        },
+        "Interest": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
+                },
+                "interests": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "EarlyAccess": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "contact_number": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "PushNotificationStatus": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "push_notification_id": {
+                    "type": "integer"
+                },
+                "device_id": {
+                    "type": "integer"
+                },
+                "seen_at": {
+                    "type": "string"
+                },
+                "read_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "Report": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "reason": {
+                    "type": "string"
+                },
+                "comments": {
+                    "type": "string"
+                },
+                "reported_user": {
+                    "type": "string"
+                },
+                "reported_by_user": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "SuccessResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "result": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "payload": {
+                    "type": "object"
+                }
+            }
+        },
+        "Paginator": {
+            "type": "object",
+            "properties": {
+                "current_page": {
+                    "type": "number"
+                },
+                "per_page": {
+                    "type": "number",
+                    "default": 50
+                },
+                "from": {
+                    "type": "number"
+                },
+                "to": {
+                    "type": "number"
+                },
+                "total": {
+                    "type": "number"
+                },
+                "last_page": {
+                    "type": "number"
+                }
+            }
+        },
+        "ApiErrorUnauthorized": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "result": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "payload": {
+                    "type": "object"
+                }
+            }
+        },
+        "ApiErrorAccessDenied": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "result": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "payload": {
+                    "type": "object"
+                }
+            }
+        },
+        "ApiError": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "result": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "payload": {
+                    "type": "object"
+                }
+            }
+        },
+        "AuthRegisterResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "result": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "payload": {
+                    "$ref": "#\/definitions\/User"
+                }
+            }
+        },
+        "AuthLoginResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "result": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "payload": {
+                    "$ref": "#\/definitions\/User"
+                }
+            }
+        },
+        "AuthEmailVerificationResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "result": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "payload": {
+                    "$ref": "#\/definitions\/User"
+                }
+            }
+        },
+        "ProfileMyProfileResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "result": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "payload": {
+                    "$ref": "#\/definitions\/User"
+                }
+            }
+        },
+        "ProfileUpdateMyProfileResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "result": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "payload": {
+                    "$ref": "#\/definitions\/User"
+                }
+            }
+        },
+        "ProfileUpdateMyAvatarResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "result": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "payload": {
+                    "$ref": "#\/definitions\/User"
+                }
+            }
+        },
+        "ProfileProfileSetup01Response": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "result": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "payload": {
+                    "$ref": "#\/definitions\/User"
+                }
+            }
+        },
+        "ProfileProfileSetupVideoResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "result": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "payload": {
+                    "$ref": "#\/definitions\/User"
+                }
+            }
+        },
+        "ProfileProfileSetupImagesResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "result": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "payload": {
+                    "$ref": "#\/definitions\/User"
+                }
+            }
+        },
+        "ProfileProfileSetup03Response": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "result": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "payload": {
+                    "$ref": "#\/definitions\/User"
+                }
+            }
+        },
+        "ProfileProfileSetup04Response": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "result": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "payload": {
+                    "$ref": "#\/definitions\/User"
+                }
+            }
+        },
+        "ProfileGetInterestAndNationalityResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "result": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "payload": {
+                    "$ref": "#\/definitions\/SupportData"
+                }
+            }
+        },
+        "ProfileProfileCompleteResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "result": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "payload": {
+                    "$ref": "#\/definitions\/User"
+                }
+            }
+        },
+        "ProfileGetProfileDetailsResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "result": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "payload": {
+                    "$ref": "#\/definitions\/User"
+                }
+            }
+        },
+        "HomeAPIHomeResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "result": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "payload": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#\/definitions\/User"
+                    }
+                },
+                "paginator": {
+                    "$ref": "#\/definitions\/Paginator"
+                }
+            }
+        },
+        "HomeAPIGetMatchProfileResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "result": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "payload": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#\/definitions\/User"
+                    }
+                },
+                "paginator": {
+                    "$ref": "#\/definitions\/Paginator"
+                }
+            }
+        },
+        "HomeAPIUnmatchProfileResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "result": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "payload": {
+                    "$ref": "#\/definitions\/User"
+                }
+            }
+        },
+        "ChatSendChatMessageResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "result": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "payload": {
+                    "$ref": "#\/definitions\/Chat"
+                }
+            }
+        },
+        "ChatChatUserListResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "result": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "payload": {
+                    "$ref": "#\/definitions\/ChatRoom"
+                }
+            }
+        },
+        "ChatChatListResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "result": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "payload": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#\/definitions\/Chat"
+                    }
+                },
+                "paginator": {
+                    "$ref": "#\/definitions\/Paginator"
+                }
+            }
+        },
+        "ChatAddChatReportResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "result": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "payload": {
+                    "$ref": "#\/definitions\/ChatReport"
+                }
+            }
+        },
+        "ChatUpdateChatSettingsResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "result": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "payload": {
+                    "$ref": "#\/definitions\/User"
+                }
+            }
+        },
+        "SettingsGetSettingsResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "result": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "payload": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#\/definitions\/Setting"
+                    }
+                },
+                "paginator": {
+                    "$ref": "#\/definitions\/Paginator"
+                }
+            }
+        }
+    }
+}
