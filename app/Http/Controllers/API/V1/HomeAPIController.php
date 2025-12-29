@@ -11,7 +11,7 @@ use App\Entities\ChatRooms\ChatRoom;
 use EMedia\Devices\Auth\DeviceAuthenticator;
 use App\Entities\ChatRooms\ChatRoomRepository;
 use App\Entities\ProfilePreferences\ProfilePreference;
-use EMedia\Oxygen\Entities\Traits\FiltersByLatLngTrait;
+use EMedia\Entities\Traits\FiltersByLatLngTrait;
 use App\Entities\ProfilePreferences\ProfilePreferencesRepository;
 
 class HomeAPIController extends APIBaseController
@@ -48,7 +48,7 @@ class HomeAPIController extends APIBaseController
 		});
 
 
-		$user = DeviceAuthenticator::getUserByAccessToken();
+		$user = \Illuminate\Support\Facades\Auth::user();
 
 		//get only the profiles that have not liked
 		$preference = $user->preferences->pluck('preferred_user_id');
@@ -119,7 +119,7 @@ class HomeAPIController extends APIBaseController
 				]);
 		});
 
-		$user = DeviceAuthenticator::getUserByAccessToken();
+		$user = \Illuminate\Support\Facades\Auth::user();
 		$preferred_user = User::findOrFail($request->preferred_user_id);
 		$is_match = false;
 
@@ -169,7 +169,7 @@ class HomeAPIController extends APIBaseController
 				->setSuccessPaginatedObject(User::class);
 		});
 
-		$user = DeviceAuthenticator::getUserByAccessToken();
+		$user = \Illuminate\Support\Facades\Auth::user();
 
 		$preferred_by = ProfilePreference::where('preferred_user_id', $user->id)->pluck('user_id');
 
@@ -209,7 +209,7 @@ class HomeAPIController extends APIBaseController
 				->setSuccessObject(app('oxygen')::getUserClass());
 		});
 
-		$user = DeviceAuthenticator::getUserByAccessToken();
+		$user = \Illuminate\Support\Facades\Auth::user();
 
 		$preference = $user->preferences()->where('preferred_user_id', $request->preferred_user_id)->first();
 

@@ -2,7 +2,7 @@
 
 namespace App\Entities\Auth;
 
-use EMedia\Oxygen\Entities\Auth\SingleTenant\Ability as AbilityBase;
+use EMedia\Entities\Auth\SingleTenant\Ability as AbilityBase;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 

@@ -3,115 +3,36 @@
 namespace App\Http\Controllers\Manage;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\RedirectResponse;
-use ElegantMedia\SimpleRepository\Search\Filterable;
-use EMedia\AppSettings\Http\Controllers\Manage\ManageSettingsController;
+use App\Http\Controllers\Controller;
+use App\Entities\Settings\Setting;
 
-class SettingsController extends ManageSettingsController
+class SettingsController extends Controller
 {
     // only these settings will display in index view
-    private array $visibleSettings = ['PRIVACY_POLICY', 'ABOUT_US', 'TERMS_AND_CONDITIONS', 'FAQ'];
-
-    protected function getIndexFilter(): Filterable
-    {
-        $filter = $this->repo->newSearchFilter(true);
-
-        $filter
-            ->whereIn('setting_key', $this->visibleSettings)
-            ->with(['group']);
-
-        return $filter;
-    }
+    private array $visibleSettings = ['PRIVACY_POLICY', 'ABOUT_US', 'TERMS_AND_CONDITIONS', 'FAQ', 'STRIPE_KEY', 'STRIPE_SECRET', 'FCM_SERVER_KEY', 'AGORA_APP_ID', 'GOOGLE_MAPS_KEY'];
 
     public function index()
     {
+        $settings = Setting::whereIn('setting_key', $this->visibleSettings)->pluck('setting_value', 'setting_key');
 
-        $data = [
-            'pageTitle'                 => $this->getResourcePluralName(),
-            'allItems'                  => $this->repo->search($this->getIndexFilter()),
-            'isDestroyingEntityAllowed' => $this->isDestroyAllowed(),
-            'canCreateEntities'         => $this->canCreateEntities(),
-            'canEditEntities'           => $this->canEditEntities(),
-        ];
-
-        return view('manage.settings.index', $data);
+        return view('manage.settings.index', [
+            'pageTitle' => 'Settings',
+            'settings' => $settings,
+            'visibleSettings' => $this->visibleSettings
+        ]);
     }
 
-    /**
-     *
-     * Edit the resource
-     *
-     * @param $id
-     *
-     * @return Factory|View
-     * @throws FileNotFoundException
-     */
-    public function edit($id)
+    public function update(Request $request, $id = null)
     {
-        $entity = $this->repo->find($id);
+        $data = $request->only($this->visibleSettings);
 
-        $data = [
-            'pageTitle' => $this->getEditPageTitle($entity),
-            'entity'    => $entity,
-            'form'      => $this->getEditForm($entity),
-            'key'       => $entity->setting_key,
-        ];
-
-        $viewName = $this->getEditViewName();
-
-        switch ($entity->setting_key) {
-            // if setting key is PRIVACY_POLICY, show the privacy policy pdf upload view
-            // if setting key is TERMS_AND_CONDITIONS, show the pdf upload view
-            case 'TERMS_AND_CONDITIONS':
-            case 'PRIVACY_POLICY':
-            case 'FAQ':
-            case 'ABOUT_US':
-                return view('manage.settings.form', $data);
-            default:
-                return view($viewName, $data);
+        foreach ($data as $key => $value) {
+            Setting::updateOrCreate(
+                ['setting_key' => $key],
+                ['setting_value' => $value]
+            );
         }
-    }
 
-    /**
-     * Update about us page values
-     *
-     * @param Request $request
-     * @return RedirectResponse
-     * @throws ValidationException
-     */
-    public function update(Request $request, $id): RedirectResponse
-    {
-        $this->validate($request, [
-            'terms_and_conditions' => 'nullable',
-            'privacy_policy'       => 'nullable',
-            'about_us'             => 'nullable',
-            'faq'                  => 'nullable',
-            'facebook_url'         => 'nullable|max:255',
-            'instagram_url'        => 'nullable|max:255',
-            'support_email'        => 'nullable|email',
-            'support_phone'        => 'nullable|max:255|min:9',
-        ]);
-
-        $data = $request->all([
-            'terms_and_conditions',
-            'privacy_policy',
-            'about_us',
-            'faq',
-            'facebook_url',
-            'instagram_url',
-            'support_email',
-            'support_phone',
-        ]);
-
-        try {
-            foreach ($data as $key => $value) {
-                if ($value) {
-                    setting_set(strtoupper($key), $value);
-                }
-            }
-            return back()->with('success', 'Settings Updated');
-        } catch (\Throwable $exception) {
-            return back()->with('error', 'Failed to update settings');
-        }
+        return back()->with('success', 'Settings Updated');
     }
 }

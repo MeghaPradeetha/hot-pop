@@ -5,18 +5,12 @@ namespace App\Http\Controllers\Manage;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use EMedia\Formation\Builder\Formation;
-use ElegantMedia\OxygenFoundation\Http\Traits\Web\CanCRUD;
-use ElegantMedia\OxygenFoundation\Http\Traits\Web\CanRead;
 use App\Entities\SubscriptionPlans\SubscriptionPlansRepository;
-use ElegantMedia\OxygenFoundation\Http\Traits\Web\FollowsConventions;
 
 class SubscriptionPlanController extends Controller
 {
-    use FollowsConventions;
 
     // Uncomment this line if you're going to use Oxygen's Default Controller Methods
-    use CanCRUD;
-    // use CanRead;
 
     protected $repo;
 

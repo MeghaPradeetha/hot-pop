@@ -45,7 +45,9 @@
                             <div class="upload__img-wrap">
                                 <div class="upload__btn-box">
                                     <label class="upload__btn">
-                                        <img alt="upload" src="images/ic_profilesetup_upload.png" width="" />
+                                        <div class="text-center">
+                                            <i class="fas fa-plus fa-2x"></i>
+                                        </div>
                                         <input accept="image/*" class="upload__file" data-max_length="4" data-index="0" name="images[]" type="file">
                                     </label>
                                 </div>

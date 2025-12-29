@@ -197,8 +197,8 @@ return [
         App\Providers\RouteServiceProvider::class,
 		Kreait\Laravel\Firebase\ServiceProvider::class,
         App\Providers\TelescopeServiceProvider::class,
-        App\Providers\OxygenServiceProvider::class,
-        EMedia\MultiTenant\MultiTenantServiceProvider::class,
+
+
         NotificationChannels\Apn\ApnServiceProvider::class,
 
         LaravelFCM\FCMServiceProvider::class,

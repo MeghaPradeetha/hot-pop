@@ -8,7 +8,7 @@ use App\Http\Controllers\API\V1\Auth\ProfileController;
 
 Route::group([
 	'prefix'     => 'v1',
-	'middleware' => ['auth.api'],
+	'middleware' => ['auth:sanctum'],
 	'namespace'  => '\App\Http\Controllers\API\V1'
 ], function ()
 {
@@ -22,7 +22,7 @@ Route::group([
 		Route::get('/resend-code', [AuthController::class, 'resendCode']);
 
 		// logged-in users
-		Route::group(['middleware' => ['auth.api.logged-in']], function ()
+		Route::group(['middleware' => []], function ()
 		{
 			Route::get('/logout', 'Auth\AuthController@logout');
 			Route::get('/profile', 'Auth\ProfileController@index');
@@ -69,9 +69,5 @@ Route::group([
 		});
 	}
 
-	Route::group(['namespace' => '\EMedia\AppSettings\Http\Controllers\API\V1'], function ()
-	{
-		Route::get('/settings', 'SettingsController@index')->name('settings.index');
-		Route::get('/settings/{key}', 'SettingsController@show')->name('settings.show');
-	});
+
 });

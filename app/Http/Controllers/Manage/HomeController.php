@@ -55,7 +55,7 @@ class HomeController extends Controller
             $profiles = $this->personalityRepo->matchFilter($request);
         }
         // return $profiles;
-        return view('pages.profile-home', compact('profiles', 'preferred_by_profiles', 'logged_user'));
+        return view('pages.profile-home', compact('profiles', 'preferred_by_profiles', 'logged_user') + ['pageTitle' => 'Home']);
     }
 
     public function getNextProfile(Request $request)
@@ -164,7 +164,7 @@ class HomeController extends Controller
             ->get();
 
         $profile_count = $profile_match->count();
-        return view('pages.matches', compact('profile_match', 'profile_count'));
+        return view('pages.matches', compact('profile_match', 'profile_count') + ['pageTitle' => 'Matches']);
     }
 
     public function unsetMatched($id)
@@ -188,6 +188,6 @@ class HomeController extends Controller
     {
 		$filter = Filter::where('user_id',Auth::user()->id)->first();
 
-        return view('pages.match-filter',compact('filter'));
+        return view('pages.match-filter',compact('filter') + ['pageTitle' => 'Match Filters']);
     }
 }

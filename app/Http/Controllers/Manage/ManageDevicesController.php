@@ -1,9 +1,13 @@
 <?php
 namespace App\Http\Controllers\Manage;
 
-class ManageDevicesController extends \EMedia\Devices\Http\Controllers\Manage\ManageDevicesController
+use App\Http\Controllers\Controller;
+use App\Entities\Devices\Device;
+
+class ManageDevicesController extends Controller
 {
-
-	// Add custom logic here
-
+    public function index()
+    {
+        return view('manage.dashboard.index', ['pageTitle' => 'Devices', 'totalUsers' => 0, 'totalDevices' => 0, 'newUsersLast7Days' => 0, 'newUsersToday' => 0]); // Temporary redirect or view
+    }
 }

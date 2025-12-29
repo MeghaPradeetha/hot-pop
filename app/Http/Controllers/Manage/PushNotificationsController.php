@@ -3,19 +3,12 @@
 
 namespace App\Http\Controllers\Manage;
 
-class PushNotificationsController extends \EMedia\OxygenPushNotifications\Http\Controllers\Manage\PushNotificationsController
+use App\Http\Controllers\Controller;
+
+class PushNotificationsController extends Controller
 {
-
-	// Add any custom logic or override the functions
-
-	protected function indexRouteName()
-	{
-		return 'manage.push-notifications.index';
-	}
-
-	protected function indexViewName()
-	{
-		return 'oxygen-push-notifications::manage.index';
-	}
-
+    public function index()
+    {
+        return "Push Notifications Manager - Not Implemented Yet";
+    }
 }

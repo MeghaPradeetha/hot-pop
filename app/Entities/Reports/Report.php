@@ -4,7 +4,6 @@ namespace App\Entities\Reports;
 
 use App\Models\User;
 use EMedia\Formation\Entities\GeneratesFields;
-use ElegantMedia\SimpleRepository\Search\Eloquent\SearchableLike;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -12,11 +11,9 @@ class Report extends Model
 {
 
     use HasFactory;
-	use SearchableLike;
-	use GeneratesFields;
 
 	// Auto-generate UUIDs for new records
-	// use \ElegantMedia\OxygenFoundation\Database\Eloquent\Traits\AssignsUuid;
+	// use \Hotpop\OxygenFoundation\Database\Eloquent\Traits\AssignsUuid;
 
 	// Uncomment the following if you want to use slug generation
 	// use \Spatie\Sluggable\HasSlug;

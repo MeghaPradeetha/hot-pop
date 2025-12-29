@@ -10,6 +10,10 @@ use Illuminate\Support\Facades\Auth;
 
 class PersonalitiesRepository extends BaseRepository
 {
+    public function __construct(Personality $model)
+    {
+        parent::__construct($model);
+    }
 
 	public function matchFilter($request)
 	{

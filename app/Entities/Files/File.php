@@ -2,18 +2,24 @@
 
 namespace App\Entities\Files;
 
-use ElegantMedia\OxygenFoundation\Database\Eloquent\Traits\AssignsUuid;
-use ElegantMedia\SimpleRepository\Search\Eloquent\SearchableLike;
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Spatie\Sluggable\SlugOptions;
 
 class File extends Model
 {
 
-	use SearchableLike;
-	use AssignsUuid;
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (empty($model->uuid)) {
+                $model->uuid = (string) Str::uuid();
+            }
+        });
+    }
 
 	protected $fillable = [
 		'name',

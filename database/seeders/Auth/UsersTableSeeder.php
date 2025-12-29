@@ -1,9 +1,10 @@
 <?php
 namespace Database\Seeders\Auth;
 
-use EMedia\MultiTenant\Facades\TenantManager;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
+use Silber\Bouncer\BouncerFacade as Bouncer;
 
 class UsersTableSeeder extends Seeder
 {
@@ -19,12 +20,10 @@ class UsersTableSeeder extends Seeder
 
 	public function seedTestUsers()
 	{
-		$userModel = app('oxygen')::makeUserModel();
-
 		$users = [
 			[
 				'name'	 => 'Peter Parker (REGULAR USER)',
-				'email'	 => 'apps+user@elegantmedia.com.au',
+				'email'	 => 'user@hotpop.com',
 				'age' => 37,
 				'location' => 'Melbourn',
 				'gender' => 'Male',
@@ -33,63 +32,20 @@ class UsersTableSeeder extends Seeder
 			],
 			[
 				'name'	 => 'Bruce Banner (ADMIN)',
-				'email'	 => 'apps+admin@elegantmedia.com.au',
+				'email'	 => 'admin@hotpop.com',
 				'age' => 30,
 				'location' => 'Melbourn',
 				'gender' => 'Male',
 				'subscription_plan' => 'Free Trial',
 				'password' => bcrypt('12345678')
 			],
-			[
-				'name'	 => 'Steve Rogers (SUPER-ADMIN)',
-				'email'	 => 'apps@elegantmedia.com.au',
-				'age' => 26,
-				'location' => 'Melbourn',
-				'gender' => 'Male',
-				'subscription_plan' => 'Free Trial',
-				'password' => bcrypt('12345678')
-			],
-			[
-				'name'	 => 'Tony Stark (SUPER-ADMIN)',
-				'email'	 => 'apps+suadmin@elegantmedia.com.au',
-				'age' => 24,
-				'location' => 'Melbourn',
-				'gender' => 'Male',
-				'subscription_plan' => 'Free Trial',
-				'password' => bcrypt('12345678')
-			],
-			[
-				'name'	 => 'Bruce Wayne (DEVELOPER)',
-				'email'	 => 'apps+dev@elegantmedia.com.au',
-				'age' => 30,
-				'location' => 'Melbourn',
-				'gender' => 'Male',
-				'subscription_plan' => 'Free Trial',
-				'password' => bcrypt('12345678')
-			],
-			[
-				'name'	 => 'Ultron Unverified (REGULAR USER - UNVERIFIED)',
-				'email'	 => 'apps+unverified1@elegantmedia.com.au',
-				'age' => 36,
-				'location' => 'Melbourn',
-				'gender' => 'Male',
-				'subscription_plan' => 'Free Trial',
-				'password' => bcrypt('12345678')
-			],
+            // Removed other hardcoded Hotpop users for cleaner setup
 		];
 
-		$i = 0;
-		foreach ($users as $key => $data) {
-			if (!$user = $userModel::where('email', $data['email'])->first()) {
-				$user = $userModel::create($data);
-
-				if (TenantManager::multiTenancyIsActive()) {
-					$tenant = app(config('auth.tenantModel'))->find($i + 1);
-					TenantManager::setTenant($tenant);
-					$user->tenants()->save($tenant);
-				}
+		foreach ($users as $data) {
+			if (!$user = User::where('email', $data['email'])->first()) {
+				$user = User::create($data);
 			}
-			$i++;
 		}
 	}
 
@@ -97,30 +53,24 @@ class UsersTableSeeder extends Seeder
 	{
 		$faker = Faker::create('en_AU');
 
-		$userModel = app('oxygen')::makeUserModel();
-
 		foreach(range(1, 5) as $index)
 		{
-			$user = $userModel::create([
+			$user = User::create([
 				'name' => $faker->firstName,
 				'last_name' => $faker->lastName,
 				'email' => $faker->email,
 				'password' => bcrypt('12345678'),
 			]);
 
-			$user->assign('users');
+            Bouncer::assign('users')->to($user);
 		}
 	}
 
 	protected function seedEmailVerifications()
 	{
-		$userModel = app('oxygen')::makeUserModel();
-
-		$users = $userModel::whereIn('email', [
-			'apps@elegantmedia.com.au',
-			'apps+user@elegantmedia.com.au',
-			'apps+admin@elegantmedia.com.au',
-			'apps+dev@elegantmedia.com.au',
+		$users = User::whereIn('email', [
+			'user@hotpop.com',
+			'admin@hotpop.com',
 		])->get();
 
 		foreach ($users as $user) {

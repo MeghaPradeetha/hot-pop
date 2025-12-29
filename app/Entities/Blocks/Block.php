@@ -3,7 +3,6 @@
 namespace App\Entities\Blocks;
 
 use EMedia\Formation\Entities\GeneratesFields;
-use ElegantMedia\SimpleRepository\Search\Eloquent\SearchableLike;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,8 +10,6 @@ class Block extends Model
 {
 
     use HasFactory;
-	use SearchableLike;
-	use GeneratesFields;
 
 	protected $table = 'block';
 

@@ -39,7 +39,7 @@
             </td>
             <td>
                 @if ($item->file_size_bytes)
-                    {{ \ElegantMedia\PHPToolkit\Conversion::bytesToHumans($item->file_size_bytes, $precision = 2) }}
+                    {{ \Hotpop\PHPToolkit\Conversion::bytesToHumans($item->file_size_bytes, $precision = 2) }}
                 @endif
             </td>
             <td>

@@ -2,20 +2,15 @@
 
 namespace App\Entities\Filters;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use EMedia\Formation\Entities\GeneratesFields;
 use Illuminate\Database\Eloquent\Model;
-use ElegantMedia\SimpleRepository\Search\Eloquent\SearchableLike;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Filter extends Model
 {
 
     use HasFactory;
-	use SearchableLike;
-	use GeneratesFields;
 
 	// Auto-generate UUIDs for new records
-	// use \ElegantMedia\OxygenFoundation\Database\Eloquent\Traits\AssignsUuid;
 
 	// Uncomment the following if you want to use slug generation
 	// use \Spatie\Sluggable\HasSlug;

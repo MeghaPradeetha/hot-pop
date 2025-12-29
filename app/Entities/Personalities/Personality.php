@@ -4,7 +4,6 @@ namespace App\Entities\Personalities;
 
 use App\Models\User;
 use EMedia\Formation\Entities\GeneratesFields;
-use ElegantMedia\SimpleRepository\Search\Eloquent\SearchableLike;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -12,8 +11,6 @@ class Personality extends Model
 {
 
     use HasFactory;
-    use SearchableLike;
-    use GeneratesFields;
 
     protected $table = 'personality';
 

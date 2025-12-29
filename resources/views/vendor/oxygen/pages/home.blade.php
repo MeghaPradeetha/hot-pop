@@ -193,7 +193,7 @@
                 </div>
                 <div class="col-lg-4 text-center">
                     <i class="fa fa-envelope-o fa-3x wow bounceIn" data-wow-delay=".1s"></i>
-                    <p><a href="mailto:info@elegantmedia.com.au">info@elegantmedia.com.au</a></p>
+                    <p><a href="mailto:info@Hotpop.com.au">info@Hotpop.com.au</a></p>
                 </div>
             </div>
         </div>

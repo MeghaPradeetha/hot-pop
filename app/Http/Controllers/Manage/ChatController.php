@@ -46,7 +46,7 @@ class ChatController extends Controller
             $list['unread_message'] = $unread;
         });
 
-        return view('pages.chat.chat_list', compact('chat_list'));
+        return view('pages.chat.chat_list', compact('chat_list') + ['pageTitle' => 'Chats']);
     }
 
     public function profileChat($id)
@@ -137,7 +137,7 @@ class ChatController extends Controller
                 'blocked_status',
                 'block',
                 'auth_user_details'
-            )
+            ) + ['pageTitle' => 'Chat']
         );
     }
 

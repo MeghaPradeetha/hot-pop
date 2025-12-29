@@ -3,6 +3,7 @@
 use Laravel\Fortify\Features;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FCMController;
+use App\Http\Controllers\Manage\DashboardController;
 use App\Http\Controllers\Manage\ChatController;
 use App\Http\Controllers\Manage\HomeController;
 use App\Http\Controllers\Common\PagesController;
@@ -23,6 +24,9 @@ use App\Http\Controllers\Manage\ManageDevicesController;
 use App\Http\Controllers\Manage\NationalitiesController;
 use App\Http\Controllers\Manage\PaymentMethodController;
 use App\Http\Controllers\Manage\SubscriptionPlanController;
+use App\Http\Controllers\Auth\LoginController; // ADDED
+use App\Http\Controllers\Auth\ForgotPasswordController; // ADDED
+use App\Http\Controllers\Auth\ResetPasswordController; // ADDED
 use Laravel\Fortify\Http\Controllers\VerifyEmailController;
 use Laravel\Fortify\Http\Controllers\EmailVerificationPromptController;
 use Laravel\Fortify\Http\Controllers\EmailVerificationNotificationController;
@@ -72,10 +76,17 @@ Route::group(['middleware' => config('fortify.middleware', ['web'])], function (
 
 		Route::get('auth/{provider}/callback', [SocialiteController::class, 'callbackSocial'])->name('socialite.callback');
 
-		Route::view('/login', 'pages.auth.login')->name('login');
-		// Route::post('/users/logins', [ManageUsersController::class, 'logins'])->name('users.logins');
+		Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+		Route::post('/login', [LoginController::class, 'login']);
+		Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-		Route::view('/reset', 'pages.auth.forgot');
+		// Password Reset Routes...
+		Route::get('password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+		Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+		Route::get('password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+		Route::post('password/reset', [ResetPasswordController::class, 'reset'])->name('password.update');
+
+		Route::view('/reset', 'pages.auth.forgot'); // Keep legacy link if needed, but password.request is standard
 	});
 
 	// Email Verification...
@@ -114,9 +125,9 @@ Route::group(['middleware' => config('fortify.middleware', ['web'])], function (
 		/**
 		 * Admin Panel Route
 		 */
-		Route::group(['middleware' => ['auth.acl:roles[super-admins|admins|developers]'], 'as' => 'manage.', 'prefix' => 'manage'], function ()
+		Route::group(['middleware' => ['auth'], 'as' => 'manage.', 'prefix' => 'manage'], function ()
 		{
-			//Route::resource('dashboard', DashboardController::class);
+			Route::resource('dashboard', DashboardController::class);
 			Route::resource('devices', ManageDevicesController::class)->only('index', 'show', 'destroy');
 			Route::resource('reports', ReportsController::class);
 			Route::resource('inquiries', InquiriesController::class);
@@ -231,14 +242,20 @@ Route::group(['middleware' => config('fortify.middleware', ['web'])], function (
 			Route::post('/profile/intro-video/update/{id}', [MyProfileController::class, 'updateVideo'])->name('video-update');
 
 			// Settings
-			Route::view('/my-account', 'pages.account.my-account')->name('my-account');
+			Route::get('/my-account', function () {
+				$user = auth()->user();
+				return view('pages.account.my-account', compact('user') + ['pageTitle' => 'My Account']);
+			})->name('my-account');
 			Route::view('/edit-account', 'pages.account.edit-account')->name('edit-account');
 			Route::post('/edit-account', 'MyProfileController@updateAccount')->name('update-account');
 			Route::view('/change-password', 'pages.account.change-password');
 			Route::view('/forgot-password', 'pages.account.forgot-password');
 			Route::delete('/delete-account', 'MyProfileController@deleteAccount')->name('delete-account');
 
-			Route::view('/chat-setting', 'pages.settings.chat-setting')->name('chat.settings');
+			Route::get('/chat-setting', function () {
+				$user = auth()->user();
+				return view('pages.settings.chat-setting', compact('user') + ['pageTitle' => 'Chat Settings']);
+			})->name('chat.settings');
 			Route::post('chat-setting', [ChatController::class, 'onlineStatus'])->name('settings.data.save');
 
 			Route::get('/subscription-plan', [SubscriptionController::class, 'show'])->name('subscription-plan');
@@ -255,11 +272,3 @@ Route::group(['middleware' => config('fortify.middleware', ['web'])], function (
 			->name('logout');
 	});
 });
-
-// Start OxygenPushNotifications Routes
-Route::group(['prefix' => 'manage', 'middleware' => ['auth', 'auth.acl:roles[super-admins|admins|developers]'], 'as' => 'manage.'], function()
-{
-	Route::resource('push-notifications', 'Manage\PushNotificationsController')
-	    ->only('index', 'create', 'store', 'edit', 'update', 'destroy');
-});
-// End OxygenPushNotifications Routes

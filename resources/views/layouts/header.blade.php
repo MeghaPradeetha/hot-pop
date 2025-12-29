@@ -35,19 +35,19 @@
             <a href="{{ route('chats') }}" class="dock-item {{ Request::is('chats') ? 'active' : '' }}">
                 <i class="fas fa-comments"></i>
                 <span class="dock-label">Chats</span>
-                @if($user->has_unread_chat > 0)
+                @if(Auth::user()->has_unread_chat > 0)
                     <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle" style="width: 10px; height: 10px;"></span>
                 @endif
             </a>
             <a href="{{ route('matched-profiles') }}" class="dock-item {{ Request::is('matched-profiles') ? 'active' : '' }}">
                 <i class="fas fa-heart"></i>
                 <span class="dock-label">Matches</span>
-                @if($user->has_matched_profile > 0)
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem;">{{ $user->has_matched_profile }}</span>
+                @if(Auth::user()->has_matched_profile > 0)
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem;">{{ Auth::user()->has_matched_profile }}</span>
                 @endif
             </a>
             <a href="{{ route('my-profile') }}" class="dock-item {{ Request::is('my-profile') ? 'active' : '' }}">
-                <img alt="Profile" class="rounded-circle" src="{{ asset('storage/'.$user->avatar )?? asset('images/sampleimages/img_nav bar_profileimg.jpeg') }}" style="width: 24px; height: 24px;">
+                <img alt="Profile" class="rounded-circle" src="{{ asset('storage/'.Auth::user()->avatar )?? asset('images/sampleimages/img_nav bar_profileimg.jpeg') }}" style="width: 24px; height: 24px;">
                 <span class="dock-label">Profile</span>
             </a>
             

@@ -708,11 +708,15 @@ a {
 	}
 
 	&__btn {
-		display: inline-block;
+		display: flex; /* Changed from inline-block to flex for centering */
+		align-items: center;
+		justify-content: center;
 		font-weight: 600;
 		text-align: center;
-		min-width: 210px;
-		line-height: 200px;
+		width: 200px; /* Fixed width */
+		height: 200px; /* Fixed height for square shape */
+		/* min-width: 210px; Removed */
+		/* line-height: 200px; Removed */
 		transition: all .3s ease;
 		cursor: pointer;
 		border: 5px dashed;
@@ -725,7 +729,7 @@ a {
 
 		&:hover {
 			background-color: unset;
-			color: #4045ba;
+			color: $a1; /* Updated to theme color found in variable $a1 */
 			transition: all .3s ease;
 		}
 

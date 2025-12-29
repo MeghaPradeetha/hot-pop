@@ -5,7 +5,6 @@ namespace App\Entities\Chats;
 use App\Entities\ChatRooms\ChatRoom;
 use App\Models\User;
 use EMedia\Formation\Entities\GeneratesFields;
-use ElegantMedia\SimpleRepository\Search\Eloquent\SearchableLike;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,8 +12,6 @@ class Chat extends Model
 {
 
     use HasFactory;
-    use SearchableLike;
-    use GeneratesFields;
 
     protected $fillable = [
         'chat_room_id',

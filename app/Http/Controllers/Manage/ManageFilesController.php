@@ -4,7 +4,7 @@
 namespace App\Http\Controllers\Manage;
 
 
-class ManageFilesController extends \EMedia\Oxygen\Http\Controllers\Manage\ManageFilesController
+class ManageFilesController extends \\App\\Http\\Controllers\\Controller
 {
 
 	// This is the default upload disk. You may change this to another disk.
@@ -32,7 +32,7 @@ class ManageFilesController extends \EMedia\Oxygen\Http\Controllers\Manage\Manag
 			if (!$user) {
 				// handle api requests
 				if (request()->header('x-api-key')) {
-					$user = \EMedia\Devices\Auth\DeviceAuthenticator::getUserByAccessToken();
+					$user = \EMedia\Devices\Auth\\Illuminate\Support\Facades\Auth::user();
 				}
 			}
 			if (!$user) abort(401);

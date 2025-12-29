@@ -12,7 +12,7 @@ use EMedia\Api\Domain\Postman\PostmanVar;
 use App\Entities\Devices\DevicesRepository;
 use EMedia\Devices\Auth\DeviceAuthenticator;
 
-class AuthController extends \EMedia\Oxygen\Http\Controllers\API\V1\Auth\AuthController
+class AuthController extends \EMedia\Http\Controllers\API\V1\Auth\AuthController
 {
 
 	protected $usersRepository;
@@ -196,7 +196,7 @@ class AuthController extends \EMedia\Oxygen\Http\Controllers\API\V1\Auth\AuthCon
 			'code' => 'required',
 		]);
 
-		$user = DeviceAuthenticator::getUserByAccessToken();
+		$user = \Illuminate\Support\Facades\Auth::user();
 
 		if ($user->confirmation_code == $request->code) {
 			$user->update(['email_confirmed_at' => now()->toDateTimeString()]);
@@ -216,7 +216,7 @@ class AuthController extends \EMedia\Oxygen\Http\Controllers\API\V1\Auth\AuthCon
 				->setName('Resend Verification Code');
 		});
 
-		$user = DeviceAuthenticator::getUserByAccessToken();
+		$user = \Illuminate\Support\Facades\Auth::user();
 		$user->confirmation_code = mt_rand(1000, 9999);
 		$user->email_confirmation_sent_at = now()->toDateTimeString();
 		$user->save();

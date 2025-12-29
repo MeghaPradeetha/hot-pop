@@ -22,7 +22,7 @@ class EmailVerification
 		if (Auth()->user() != null) {
 
 			// If the user has one of the specified roles, redirect to the dashboard
-			if (auth()->user()->isA(['super-admins', 'admins', 'developers'])) {
+			if (auth()->user()->isAn('super-admins', 'admins', 'developers')) {
 				return redirect('/dashboard');
 			}
 

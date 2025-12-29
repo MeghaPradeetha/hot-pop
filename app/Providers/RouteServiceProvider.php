@@ -37,8 +37,7 @@ class RouteServiceProvider extends ServiceProvider
 			Route::middleware('web')
 				->group(base_path('routes/web.php'));
 
-			Route::middleware('web')
-				->group(base_path('routes/oxygen-web.php'));
+
 		});
 	}
 

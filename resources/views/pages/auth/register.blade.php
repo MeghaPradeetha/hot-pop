@@ -81,23 +81,7 @@
 
                         <div class="or-breaker"><span>Or</span></div>
 
-                        <p class="text-center f-16 d5 fw-bold p-b-32">Continue With</p>
-                        <div class="row p-b-32">
-                            <div class="col-3 text-center">
-                                <a href="{{ route('socialite.auth', 'facebook') }}"><img class="social-ic" src="{{ asset('images/ic_socialmedia_fb@2x.png') }}" width="56px" /></a>
-                            </div>
-                            <div class="col-3 text-center">
-                                <a href="{{ route('socialite.auth', 'google') }}"><img class="social-ic" src="{{ asset('images/ic_socialmedia_gmail@2x.png') }}" width="56px" /></a>
-                            </div>
-                            <div class="col-3 text-center">
-                                <a href="{{ route('socialite.auth', 'tiktok') }}"><img class="social-ic" src="{{ asset('images/ic_socialmedia_tiktok@2x.png') }}"
-                                        width="56px" /></a>
-                            </div>
-                            <div class="col-3 text-center">
-                                <a href="{{ route('socialite.auth', 'instagram') }}"><img class="social-ic" src="{{ asset('images/ic_socialmedia_instagram@2x.png') }}"
-                                        width="56px" /></a>
-                            </div>
-                        </div>
+                        {{-- Social Login Removed due to missing assets --}}
                     </div>
                 </div>
             </div>

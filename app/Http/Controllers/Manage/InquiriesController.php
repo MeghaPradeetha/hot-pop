@@ -6,20 +6,14 @@ use App\Entities\Inquiries\InquiriesRepository;
 use App\Entities\Inquiries\Inquiry;
 use App\Http\Controllers\Controller;
 use EMedia\Formation\Builder\Formation;
-use ElegantMedia\OxygenFoundation\Http\Traits\Web\CanCRUD;
-use ElegantMedia\OxygenFoundation\Http\Traits\Web\CanRead;
-use ElegantMedia\OxygenFoundation\Http\Traits\Web\FollowsConventions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
 class InquiriesController extends Controller
 {
 
-	use FollowsConventions;
 
 	// Uncomment this line if you're going to use Oxygen's Default Controller Methods
-	 use CanCRUD;
-	 use CanRead;
 
 	protected $repo;
 

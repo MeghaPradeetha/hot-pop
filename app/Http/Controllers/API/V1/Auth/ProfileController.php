@@ -15,7 +15,7 @@ use App\Entities\InterestLists\InterestList;
 use EMedia\Devices\Auth\DeviceAuthenticator;
 use App\Entities\PushNotifications\SupportData;
 
-class ProfileController extends \EMedia\Oxygen\Http\Controllers\API\V1\Auth\ProfileController
+class ProfileController extends \EMedia\Http\Controllers\API\V1\Auth\ProfileController
 {
 
 	/**
@@ -32,7 +32,7 @@ class ProfileController extends \EMedia\Oxygen\Http\Controllers\API\V1\Auth\Prof
 				->setSuccessObject(app('oxygen')::getUserClass());
 		});
 
-		$user = DeviceAuthenticator::getUserByAccessToken();
+		$user = \Illuminate\Support\Facades\Auth::user();
 		$user->load('files', 'personality');
 		return response()->apiSuccess($user);
 	}
@@ -56,7 +56,7 @@ class ProfileController extends \EMedia\Oxygen\Http\Controllers\API\V1\Auth\Prof
 				->setSuccessObject(app('oxygen')::getUserClass());
 		});
 
-		$user = DeviceAuthenticator::getUserByAccessToken();
+		$user = \Illuminate\Support\Facades\Auth::user();
 
 		$this->validate($request, [
 			'name'              => 'required',
@@ -99,7 +99,7 @@ class ProfileController extends \EMedia\Oxygen\Http\Controllers\API\V1\Auth\Prof
 				->setSuccessObject(app('oxygen')::getUserClass());
 		});
 
-		$user = DeviceAuthenticator::getUserByAccessToken();
+		$user = \Illuminate\Support\Facades\Auth::user();
 
 		$this->validate($request, [
 			'file' => 'required|file|mimes:mp4,mov|max:20480',
@@ -143,7 +143,7 @@ class ProfileController extends \EMedia\Oxygen\Http\Controllers\API\V1\Auth\Prof
 				->setSuccessObject(app('oxygen')::getUserClass());
 		});
 
-		$user = DeviceAuthenticator::getUserByAccessToken();
+		$user = \Illuminate\Support\Facades\Auth::user();
 
 		$this->validate($request, [
 			'images'   => 'required|array|min:1',
@@ -196,7 +196,7 @@ class ProfileController extends \EMedia\Oxygen\Http\Controllers\API\V1\Auth\Prof
 				->setSuccessObject(app('oxygen')::getUserClass());
 		});
 
-		$user = DeviceAuthenticator::getUserByAccessToken();
+		$user = \Illuminate\Support\Facades\Auth::user();
 
 		$validateData = $this->validate($request, [
 			'interests'   => 'required',
@@ -244,7 +244,7 @@ class ProfileController extends \EMedia\Oxygen\Http\Controllers\API\V1\Auth\Prof
 				->setSuccessObject(app('oxygen')::getUserClass());
 		});
 
-		$user = DeviceAuthenticator::getUserByAccessToken();
+		$user = \Illuminate\Support\Facades\Auth::user();
 
 		$validateData = $this->validate($request, [
 			'relationship_type' => 'required',
@@ -277,7 +277,7 @@ class ProfileController extends \EMedia\Oxygen\Http\Controllers\API\V1\Auth\Prof
 				->setSuccessObject(app('oxygen')::getUserClass());
 		});
 
-		$user = DeviceAuthenticator::getUserByAccessToken();
+		$user = \Illuminate\Support\Facades\Auth::user();
 
 		$user->update([
 			'profile_setup_step' => User::LOGGED_IN_PAGE
@@ -328,7 +328,7 @@ class ProfileController extends \EMedia\Oxygen\Http\Controllers\API\V1\Auth\Prof
 				->setName('Delete My Account');
 		});
 
-		$user = DeviceAuthenticator::getUserByAccessToken();
+		$user = \Illuminate\Support\Facades\Auth::user();
 
 		$user->stripPIIDAndDelete();
 

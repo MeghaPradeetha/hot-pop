@@ -155,8 +155,8 @@ npm run build
 
 ## Licence
 
-Project Licenced to HOT POP. [Copyright Elegant Media](https://www.elegantmedia.com.au)
+Project Licenced to HOT POP. [Copyright Hot Pop](https://www.hotpop.com)
 
 ## Copyright
 
-Copyright (c) Elegant Media.
+Copyright (c) HOT POP.

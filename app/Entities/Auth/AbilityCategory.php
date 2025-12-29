@@ -3,7 +3,7 @@
 namespace App\Entities\Auth;
 
 use Cviebrock\EloquentSluggable\Sluggable;
-use ElegantMedia\OxygenFoundation\Scout\KeywordSearchable;
+use Hotpop\OxygenFoundation\Scout\KeywordSearchable;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Searchable;
 use Spatie\Sluggable\HasSlug;

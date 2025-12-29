@@ -45,7 +45,7 @@ class MyProfileController extends Controller
         }
 
 
-        return view('pages.user-profile', compact('my_profile', 'interests', 'image_array', 'video'));
+        return view('pages.user-profile', compact('my_profile', 'interests', 'image_array', 'video') + ['pageTitle' => 'My Profile']);
     }
 
     /**

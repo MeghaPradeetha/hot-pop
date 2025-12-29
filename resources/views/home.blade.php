@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="ie=edge" http-equiv="X-UA-Compatible">
-    <title>@yield('pageTitle', $pageTitle)</title>
+    <title>@yield('pageTitle', $pageTitle ?? 'HOT POP')</title>
 
     <!-- Google tag (gtag.js) : For advertise-->
     <script async src="https://www.googletagmanager.com/gtag/js?id=AW-11453411855"></script>
@@ -97,9 +97,7 @@
         {{-- Previous Hero Section Removed for Redesign --}}
 
 
-        <div class="why-bg"><img alt="lines" class="" src="images/img_landing_bgVec@2x.png" width="596px" /></div>
 
-        <div class="feature-bg"><img alt="lines" class="" src="images/img_landing_bgVec@2x.png" width="899px" /></div>
 
         <section class="red-section p-t-80 p-b-40">
             <div class="container text-center">
@@ -208,51 +206,7 @@
             });
         });
         
-        function createVideoElement(src) {
-            var videoElement = document.createElement('video');
-            videoElement.classList.add('video-slide');
-            videoElement.autoplay = true;
-            // videoElement.playsinline = true;
-            videoElement.loop = true;
-            videoElement.muted = true;
-            videoElement.setAttribute("playsinline", "");
 
-            var sourceElement = document.createElement('source');
-            sourceElement.src = src;
-            sourceElement.type = 'video/mp4';
-
-            videoElement.appendChild(sourceElement);
-            return videoElement;
-        }
-
-        // Video sources
-        var videoSources = [
-            'images/sampleimages/Parent.mp4',
-            'images/sampleimages/user.mp4',
-            'images/sampleimages/user2.mp4'
-        ];
-
-        document.addEventListener('DOMContentLoaded', function() {
-            var videoContainer = document.getElementById('videoContainer');
-
-            // Iterate over video sources and create video elements
-            videoSources.forEach(function(src, index) {
-                var videoElement = createVideoElement(src);
-
-                var carouselItem = document.createElement('div');
-                carouselItem.classList.add('carousel-item');
-                if (index === 0) {
-                    carouselItem.classList.add('active');
-                }
-
-                var videoWrapper = document.createElement('div');
-                videoWrapper.classList.add('video-slide');
-                videoWrapper.appendChild(videoElement);
-
-                carouselItem.appendChild(videoWrapper);
-                videoContainer.appendChild(carouselItem);
-            });
-        });
     </script>
 </body>
 

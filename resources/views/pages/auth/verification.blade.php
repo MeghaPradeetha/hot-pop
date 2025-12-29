@@ -4,7 +4,7 @@
     <section class="d1-bg landing-body"> <!-- Landing page body -->
         <section class="">
             <div class="container py-4 py-lg-5">
-                @include('oxygen::partials.flash')
+                {{-- @include('oxygen::partials.flash') --}}
 
                 <div class="form-card p-200">
                     <div class="header-card text-center">

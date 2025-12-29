@@ -1,11 +1,13 @@
-@extends('oxygen::layouts.master-dashboard')
+@extends('layouts.admin')
 
- <?php
-$pageTitle='Add New User'
-?> 
+@section('title', isset($entity->id) ? 'Edit User' : 'Add New User')
 
-@section ('content')
-{{ lotus()->pageHeadline($pageTitle) }}
+@section('content')
+<div class="card shadow-sm">
+    <div class="card-header bg-white py-3">
+        <h6 class="m-0 font-weight-bold text-primary">{{ isset($entity->id) ? 'Edit User' : 'Add New User' }}</h6>
+    </div>
+    <div class="card-body">
 
 <form action="{{ entity_resource_path() }}" method="post" class="form-horizontal" enctype="multipart/form-data">
     {{ csrf_field() }}
@@ -144,5 +146,7 @@ $pageTitle='Add New User'
         color: #ccc;
     }
 </style>
+    </div>
+</div>
 @endpush
 @stop

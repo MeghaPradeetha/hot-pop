@@ -11,10 +11,9 @@ use App\Entities\Inquiries\Inquiry;
 use App\Entities\ChatRooms\ChatRoom;
 use App\Entities\Interests\Interest;
 use Illuminate\Notifications\Notifiable;
-use App\Entities\Personalities\Personality;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use EMedia\Oxygen\Entities\Traits\OxygenUserTrait;
 use App\Entities\ProfilePreferences\ProfilePreference;
+use App\Entities\Personalities\Personality;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -23,7 +22,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
 	// use HasApiTokens;
 	use HasFactory, Notifiable;
-	use OxygenUserTrait;
+    use \Silber\Bouncer\Database\HasRolesAndAbilities;
 	use Billable;
 
 	/**
@@ -185,6 +184,16 @@ class User extends Authenticatable implements MustVerifyEmail
 			'chat_room'            => ['type' => 'object', 'items' => 'ChatRoom'],
 		];
 	}
+
+    public function getFirstNameAttribute()
+    {
+        return explode(' ', $this->name)[0];
+    }
+
+    public function getFullNameAttribute()
+    {
+        return $this->name . ' ' . $this->last_name;
+    }
 
 	public function getIsEmailVerifiedAttribute(): bool
 	{

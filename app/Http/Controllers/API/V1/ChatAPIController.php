@@ -41,7 +41,7 @@ class ChatAPIController extends APIBaseController
 				->setSuccessObject(ChatRoom::class);
 		});
 
-		$user = DeviceAuthenticator::getUserByAccessToken();
+		$user = \Illuminate\Support\Facades\Auth::user();
 
 		$chat_rooms = $this->repo->getUserRoomList($user->id);
 		$chat_rooms->load('lastChat');
@@ -70,7 +70,7 @@ class ChatAPIController extends APIBaseController
 				->setSuccessObject(Chat::class);
 		});
 
-		$user = DeviceAuthenticator::getUserByAccessToken();
+		$user = \Illuminate\Support\Facades\Auth::user();
 
 		$request->validate([
 			'receiver_id' => 'required|exists:users,id',
@@ -149,7 +149,7 @@ class ChatAPIController extends APIBaseController
 				->setSuccessPaginatedObject(Chat::class);
 		});
 
-		$user = DeviceAuthenticator::getUserByAccessToken();
+		$user = \Illuminate\Support\Facades\Auth::user();
 
 
 		$chat_room = ChatRoom::find($request->chat_room_id);
@@ -224,7 +224,7 @@ class ChatAPIController extends APIBaseController
 				]);
 		});
 
-		$user = DeviceAuthenticator::getUserByAccessToken();
+		$user = \Illuminate\Support\Facades\Auth::user();
 
 		$request->validate([
 			'chat_room_id' => 'required|exists:chat_rooms,id'
@@ -260,7 +260,7 @@ class ChatAPIController extends APIBaseController
 				]);
 		});
 
-		$user = DeviceAuthenticator::getUserByAccessToken();
+		$user = \Illuminate\Support\Facades\Auth::user();
 
 		$request->validate([
 			'block_user_id' => 'required|exists:users,id',
@@ -302,7 +302,7 @@ class ChatAPIController extends APIBaseController
 				]);
 		});
 
-		$user = DeviceAuthenticator::getUserByAccessToken();
+		$user = \Illuminate\Support\Facades\Auth::user();
 
 		$request->validate([
 			'chat_id' => 'required|exists:chats,id',
@@ -338,7 +338,7 @@ class ChatAPIController extends APIBaseController
 				->setSuccessObject(app('oxygen')::getUserClass());
 		});
 
-		$user = DeviceAuthenticator::getUserByAccessToken();
+		$user = \Illuminate\Support\Facades\Auth::user();
 
 		$user->update([
 			'online_status' => $request->online_status,
@@ -363,7 +363,7 @@ class ChatAPIController extends APIBaseController
 				->setSuccessObject(ChatReport::class);
 		});
 
-		$user = DeviceAuthenticator::getUserByAccessToken();
+		$user = \Illuminate\Support\Facades\Auth::user();
 
 		$validateData = $request->validate([
 			'reported_user' => 'required',

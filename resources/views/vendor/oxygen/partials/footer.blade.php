@@ -17,7 +17,7 @@
                     <span class="text">
                         Licenced to {{ config('app.name') }}
                         <br>
-                        &copy; {{ date('Y') }} <a href="http://www.elegantmedia.com.au" target="_blank">Elegant Media</a>
+                        &copy; {{ date('Y') }} <a href="http://www.Hotpop.com.au" target="_blank">Elegant Media</a>
                     </span>
                     <br>
                     <span class="text">{{-- Made with Love --}}</span>

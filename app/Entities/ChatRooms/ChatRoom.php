@@ -9,14 +9,11 @@ use Illuminate\Database\Eloquent\Model;
 use EMedia\Devices\Auth\DeviceAuthenticator;
 use EMedia\Formation\Entities\GeneratesFields;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use ElegantMedia\SimpleRepository\Search\Eloquent\SearchableLike;
 
 class ChatRoom extends Model
 {
 
     use HasFactory;
-    use SearchableLike;
-    use GeneratesFields;
 
     protected $fillable = [
         'sender_id',
@@ -125,7 +122,7 @@ class ChatRoom extends Model
 
     public function getParticipantAttribute(): ?User
     {
-        $userID = auth()->id() ?? DeviceAuthenticator::getUserByAccessToken()->id ?? null;
+        $userID = auth()->id() ?? \Illuminate\Support\Facades\Auth::user()->id ?? null;
         if ($this->sender_id == $userID) {
             return $this->receiver;
         } elseif ($this->receiver_id == $userID) {

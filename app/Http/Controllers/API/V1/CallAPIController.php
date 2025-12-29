@@ -42,7 +42,7 @@ class CallAPIController extends Controller
                 }');
         });
 
-        $authorizedUser = DeviceAuthenticator::getUserByAccessToken();
+        $authorizedUser = \Illuminate\Support\Facades\Auth::user();
         $user = User::find($request->reciver_id);
         if (!$user) {
             return response()->apiError('Receive User not found', 404);
@@ -118,7 +118,7 @@ class CallAPIController extends Controller
                 }');
         });
 
-        $auth_user = DeviceAuthenticator::getUserByAccessToken();
+        $auth_user = \Illuminate\Support\Facades\Auth::user();
         $notify_user_id = $request->reciver_id;
         $is_accept = $request->is_accept == '1' ? 'true' : 'false';
 

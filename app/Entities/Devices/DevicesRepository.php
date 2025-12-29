@@ -3,7 +3,7 @@
 
 namespace App\Entities\Devices;
 
-use ElegantMedia\OxygenFoundation\Entities\OxygenRepository;
+use Hotpop\OxygenFoundation\Entities\OxygenRepository;
 
 class DevicesRepository extends OxygenRepository
 {

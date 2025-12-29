@@ -3,9 +3,9 @@
 namespace App\Entities\Devices;
 
 use Carbon\Carbon;
-use EMedia\Devices\Entities\Devices\Device as MainDevice;
+use Illuminate\Database\Eloquent\Model;
 
-class Device extends MainDevice
+class Device extends Model
 {
 
 	protected $fillable = [

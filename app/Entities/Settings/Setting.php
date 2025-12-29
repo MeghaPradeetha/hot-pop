@@ -2,18 +2,13 @@
 
 namespace App\Entities\Settings;
 
-use Illuminate\Validation\Rule;
-use Illuminate\Database\Eloquent\Model;
-use EMedia\Formation\Entities\GeneratesFields;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use ElegantMedia\SimpleRepository\Search\Eloquent\SearchableLike;
+use Illuminate\Database\Eloquent\Model;
 
 class Setting extends Model
 {
 
     use HasFactory;
-    use SearchableLike;
-    use GeneratesFields;
 
     protected $table = 'settings';
 

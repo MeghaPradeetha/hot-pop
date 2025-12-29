@@ -33,7 +33,7 @@ class ContactUsController extends Controller
             }');
         });
         try {
-            // $user = DeviceAuthenticator::getUserByAccessToken();
+            // $user = \Illuminate\Support\Facades\Auth::user();
 
             $data['timestamp'] = Carbon::now()->format('d/m/Y h:i:sA');
             $data['userIp']  = request()->ip();

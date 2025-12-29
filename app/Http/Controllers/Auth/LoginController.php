@@ -1,99 +1,105 @@
 <?php
 
-
 namespace App\Http\Controllers\Auth;
 
-use EMedia\Oxygen\Http\Controllers\Auth\LoginController as OxygenLoginController;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
-use EMedia\MultiTenant\Facades\TenantManager;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
-
-class LoginController extends OxygenLoginController
+class LoginController extends Controller
 {
+    /**
+     * Where to redirect users after login.
+     *
+     * @var string
+     */
+    protected $redirectTo = '/manage/dashboard';
 
-	/*
-		|--------------------------------------------------------------------------
-		| Login Controller
-		|--------------------------------------------------------------------------
-		|
-		| This controller handles authenticating users for the application and
-		| redirecting them to your home screen. The controller uses a trait
-		| to conveniently provide its functionality to your applications.
-		|
-		*/
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('guest')->except('logout');
+    }
 
-	// use AuthenticatesUsers;
+    /**
+     * Show the application's login form.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function showLoginForm()
+    {
+        return view('pages.auth.login');
+    }
 
-	/**
-	 * Where to redirect users after login.
-	 *
-	 * @var string
-	 */
-	protected $redirectTo = '/home';
+    /**
+     * Handle an authentication attempt.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function login(Request $request)
+    {
+        $this->validateLogin($request);
 
-	/**
-	 * Create a new controller instance.
-	 *
-	 * @return void
-	 */
-	public function __construct()
-	{
-		$this->middleware('guest', ['except' => 'logout']);
-	}
+        if (Auth::attempt($this->credentials($request), $request->filled('remember'))) {
+            $request->session()->regenerate();
 
-	public function showLoginForm()
-	{
-		if (view()->exists('auth.login')) {
-			return view('auth.login');
-		}
+            return redirect()->intended($this->redirectTo);
+        }
 
-		return view('oxygen::auth.login');
-	}
+        throw ValidationException::withMessages([
+            'email' => [trans('auth.failed')],
+        ]);
+    }
 
-	protected function authenticated(Request $request, $user)
-	{
-		// see if this login is accepting any invitation tokens
-		// if we have an incoming code, let the user join that team
-		$invitationsRepo = app(config('oxygen.invitationRepository'));
-		$tenantRepo = app(config('auth.tenantRepository'));
-		$roleRepo = app(config('oxygen.roleRepository'));
+    /**
+     * Log the user out of the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function logout(Request $request)
+    {
+        Auth::logout();
 
-		if (!empty($invitation_code = Session::get('invitation_code'))) {
-			$invite = $invitationsRepo->getValidInvitationByCode($invitation_code, true);
-			if (!$invite) {
-				return redirect()
-					->intended($this->redirectPath())
-					->with('error', 'The invitation is already used or expired.');
-			}
+        $request->session()->invalidate();
 
-			// see if you can get a valid tenant
-			// if (($tenant = $tenantRepo->find($invite->tenant_id)) && !empty($invite->role_id)) {
-			if (!empty($invite->role_id)) {
-				// the RoleID should already be attached with the tenant
+        $request->session()->regenerateToken();
 
-				if (TenantManager::multiTenancyIsActive()) {
-					$tenant = $tenantRepo->find($invite->tenant_id);
-					TenantManager::setTenant($tenant);
-					$tenant->users()->attach($user->id);
-				}
+        return redirect('/');
+    }
 
-				$role = $roleRepo->find($invite->role_id);
+    /**
+     * Validate the user login request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return void
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    protected function validateLogin(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|string',
+            'password' => 'required|string',
+        ]);
+    }
 
-				// attach tenant and the role
-				$user->roles()->attach($role->id);
-
-				return redirect()
-					->intended($this->redirectPath())
-					->with('success', 'You\'ve accepted the invitation and joined the team.');
-			}
-			;
-		}
-
-		// if there are no invitations, proceed as usual
-		return redirect()->intended($this->redirectPath());
-	}
-
-
+    /**
+     * Get the needed authorization credentials from the request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    protected function credentials(Request $request)
+    {
+        return $request->only('email', 'password');
+    }
 }
