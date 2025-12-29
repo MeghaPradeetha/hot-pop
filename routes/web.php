@@ -78,7 +78,7 @@ Route::group(['middleware' => config('fortify.middleware', ['web'])], function (
 
 		Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 		Route::post('/login', [LoginController::class, 'login']);
-		Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
 
 		// Password Reset Routes...
 		Route::get('password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
@@ -268,7 +268,7 @@ Route::group(['middleware' => config('fortify.middleware', ['web'])], function (
 			
 		});
 
-		Route::get('logout', '\Laravel\Fortify\Http\Controllers\AuthenticatedSessionController@destroy')
-			->name('logout');
+		// Logout Route
+		Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 	});
 });

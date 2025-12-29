@@ -6,8 +6,8 @@ use App\Models\User;
 use App\Entities\Chats\Chat;
 use App\Entities\Blocks\Block;
 use Illuminate\Database\Eloquent\Model;
-use EMedia\Devices\Auth\DeviceAuthenticator;
-use EMedia\Formation\Entities\GeneratesFields;
+use Hotpop\Devices\Auth\DeviceAuthenticator;
+use Hotpop\Formation\Entities\GeneratesFields;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ChatRoom extends Model

@@ -123,10 +123,10 @@
     "isEntry": true,
     "src": "resources/sass/main.scss"
   },
-  "resources/sass/oxygen/bootstrap.scss": {
+  "resources/sass/bootstrap.scss": {
     "file": "assets/bootstrap-9c4ef3a8.css",
     "isEntry": true,
-    "src": "resources/sass/oxygen/bootstrap.scss"
+    "src": "resources/sass/bootstrap.scss"
   },
   "resources/sass/public.scss": {
     "file": "assets/public-2cacd515.css",

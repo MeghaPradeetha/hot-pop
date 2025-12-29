@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
-use App\Entities\Auth\UsersRepository;
 use Illuminate\Auth\Events\Registered;
 use App\Providers\RouteServiceProvider;
 use Laravel\Socialite\Facades\Socialite;
@@ -16,7 +15,7 @@ use Laravel\Socialite\Two\InvalidStateException;
 
 class SocialiteController extends Controller
 {
-    public function __construct(private UsersRepository $usersRepo)
+    public function __construct()
     {
     }
 
@@ -53,7 +52,7 @@ class SocialiteController extends Controller
             $user->save();
             // event(new Registered($user));
 
-            $this->usersRepo->addFreeTrial($user);
+            // $this->usersRepo->addFreeTrial($user);
         }
 
         // $user->update($data);

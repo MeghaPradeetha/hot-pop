@@ -4612,7 +4612,7 @@
                         "https://www.googleapis.com/auth/devstorage.read_write"
                     ],
                     "supportsMediaDownload": true,
-                    "useMediaDownloadService": true
+                    "usHotpopDownloadService": true
                 },
                 "getIamPolicy": {
                     "id": "storage.objects.getIamPolicy",

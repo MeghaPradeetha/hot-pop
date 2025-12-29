@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Manage;
 
-use EMedia\Devices\Entities\Devices\Device;
+use Hotpop\Devices\Entities\Devices\Device;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Collection;
 

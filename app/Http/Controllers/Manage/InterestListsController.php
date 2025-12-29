@@ -2,60 +2,78 @@
 
 namespace App\Http\Controllers\Manage;
 
-use App\Entities\InterestLists\InterestListsRepository;
+use App\Entities\InterestLists\InterestList;
 use App\Http\Controllers\Controller;
-use EMedia\Formation\Builder\Formation;
+use Illuminate\Http\Request;
 
 class InterestListsController extends Controller
 {
-
-
-    // Uncomment this line if you're going to use Oxygen's Default Controller Methods
-
-    protected $repo;
-
-    public function __construct(InterestListsRepository $repo)
+    public function index()
     {
-        $this->repo = $repo;
-
-        $this->resourceEntityName = 'Interest List';
-        $this->isDestroyAllowed = true;
+        $allItems = InterestList::latest()->paginate(20);
+        return view('manage.interest-lists.index', [
+            'pageTitle' => 'Interest Lists',
+            'allItems' => $allItems,
+        ]);
     }
 
-    protected function getResourcePrefix()
+    public function create()
     {
-        return 'manage.interest-lists';
+        return view('manage.interest-lists.form', [
+            'pageTitle' => 'Add Interest List',
+            'entity' => new InterestList(),
+        ]);
     }
 
-    protected function getIndexRouteName($suffix = 'index'): string
+    public function store(Request $request)
     {
-        return 'manage.interests.index';
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'status' => 'required|in:active,inactive',
+        ]);
+
+        InterestList::create($validated);
+
+        return redirect()->route('manage.interests.index')->with('success', 'Interest List created successfully.');
     }
 
-    /**
-     *
-     * This is the form shown when creating a new record.
-     *
-     * @param null $entity
-     *
-     * @return Formation
-     */
-    protected function getCreateForm($entity = null)
+    public function edit($id)
     {
-        return new Formation($entity);
+        $entity = InterestList::findOrFail($id);
+        return view('manage.interest-lists.form', [
+            'pageTitle' => 'Edit Interest List',
+            'entity' => $entity,
+        ]);
     }
 
-    /**
-     *
-     * This is the form shown when editing an existing record.
-     *
-     * @param null $entity
-     *
-     * @return Formation
-     */
-    protected function getEditForm($entity = null)
+    public function update(Request $request, $id)
     {
-        return new Formation($entity);
+        $entity = InterestList::findOrFail($id);
+        
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'status' => 'required|in:active,inactive',
+        ]);
+
+        $entity->update($validated);
+
+        return redirect()->route('manage.interests.index')->with('success', 'Interest List updated successfully.');
     }
 
+    public function destroy($id)
+    {
+        $entity = InterestList::findOrFail($id);
+        $entity->delete();
+
+        return redirect()->route('manage.interests.index')->with('success', 'Interest List deleted successfully.');
+    }
+
+    public function show($id)
+    {
+        $entity = InterestList::findOrFail($id);
+        return view('manage.interest-lists.show', [
+            'pageTitle' => 'Interest List Details',
+            'entity' => $entity,
+        ]);
+    }
 }

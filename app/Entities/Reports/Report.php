@@ -3,7 +3,7 @@
 namespace App\Entities\Reports;
 
 use App\Models\User;
-use EMedia\Formation\Entities\GeneratesFields;
+use Hotpop\Formation\Entities\GeneratesFields;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,19 +11,6 @@ class Report extends Model
 {
 
     use HasFactory;
-
-	// Auto-generate UUIDs for new records
-	// use \Hotpop\OxygenFoundation\Database\Eloquent\Traits\AssignsUuid;
-
-	// Uncomment the following if you want to use slug generation
-	// use \Spatie\Sluggable\HasSlug;
-
-	/*
-	public function getSlugOptions(): \Spatie\Sluggable\SlugOptions
-	{
-		return \Spatie\Sluggable\SlugOptions::create()->generateSlugsFrom('title')->saveSlugsTo('slug');
-	}
-    */
 
 	protected $fillable = [
 		'id',

@@ -15,7 +15,8 @@ class AccessController extends Controller
 			'pageTitle' => 'Manage Access Permissions',
 		];
 
-		return view('oxygen::auth.admin.access', $data);
+
+        return "Access Controller Placeholder";
 	}
 
 }

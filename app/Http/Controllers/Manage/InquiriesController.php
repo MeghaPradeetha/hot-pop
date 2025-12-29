@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Manage;
 use App\Entities\Inquiries\InquiriesRepository;
 use App\Entities\Inquiries\Inquiry;
 use App\Http\Controllers\Controller;
-use EMedia\Formation\Builder\Formation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -13,7 +12,7 @@ class InquiriesController extends Controller
 {
 
 
-	// Uncomment this line if you're going to use Oxygen's Default Controller Methods
+
 
 	protected $repo;
 
@@ -35,31 +34,7 @@ class InquiriesController extends Controller
 		return 'manage.inquiries.index';
 	}
 
-    /**
-     *
-     * This is the form shown when creating a new record.
-     *
-     * @param null $entity
-     *
-     * @return Formation
-     */
-    protected function getCreateForm($entity = null)
-    {
-        return new Formation($entity);
-    }
 
-    /**
-     *
-     * This is the form shown when editing an existing record.
-     *
-     * @param null $entity
-     *
-     * @return Formation
-     */
-    protected function getEditForm($entity = null)
-    {
-        return new Formation($entity);
-    }
 
 	public function email( $id)
     {

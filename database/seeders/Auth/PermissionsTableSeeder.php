@@ -14,6 +14,6 @@ class PermissionsTableSeeder extends Seeder
 	public function run()
 	{
         // Permissions are managed via Bouncer or dynamically.
-        // Previous Oxygen logic removed.
+
 	}
 }

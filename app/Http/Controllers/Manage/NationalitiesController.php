@@ -2,60 +2,81 @@
 
 namespace App\Http\Controllers\Manage;
 
-use App\Entities\Nationalities\NationalitiesRepository;
+use App\Entities\Nationalities\Nationality;
 use App\Http\Controllers\Controller;
-use EMedia\Formation\Builder\Formation;
+use Illuminate\Http\Request;
 
 class NationalitiesController extends Controller
 {
-
-
-    // Uncomment this line if you're going to use Oxygen's Default Controller Methods
-
-    protected $repo;
-
-    public function __construct(NationalitiesRepository $repo)
+    public function index()
     {
-        $this->repo = $repo;
+        $allItems = Nationality::latest()->paginate(20);
 
-        $this->resourceEntityName = 'Nationality';
-        $this->isDestroyAllowed = false;
+        return view('manage.nationalities.index', [
+            'pageTitle' => 'Nationalities',
+            'allItems' => $allItems,
+        ]);
     }
 
-    protected function getResourcePrefix()
+    public function create()
     {
-        return 'manage.nationalities';
+        return view('manage.nationalities.form', [
+            'pageTitle' => 'Add Nationality',
+            'entity' => new Nationality(),
+        ]);
     }
 
-    protected function getIndexRouteName($suffix = 'index'): string
+    public function store(Request $request)
     {
-        return 'manage.nationality.index';
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'status' => 'required|in:active,inactive',
+        ]);
+
+        Nationality::create($validated);
+
+        return redirect()->route('manage.nationality.index')->with('success', 'Nationality created successfully.');
     }
 
-    /**
-     *
-     * This is the form shown when creating a new record.
-     *
-     * @param null $entity
-     *
-     * @return Formation
-     */
-    protected function getCreateForm($entity = null)
+    public function edit($id)
     {
-        return new Formation($entity);
+        $entity = Nationality::findOrFail($id);
+        
+        return view('manage.nationalities.form', [
+            'pageTitle' => 'Edit Nationality',
+            'entity' => $entity,
+        ]);
     }
 
-    /**
-     *
-     * This is the form shown when editing an existing record.
-     *
-     * @param null $entity
-     *
-     * @return Formation
-     */
-    protected function getEditForm($entity = null)
+    public function update(Request $request, $id)
     {
-        return new Formation($entity);
+        $entity = Nationality::findOrFail($id);
+        
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'status' => 'required|in:active,inactive',
+        ]);
+
+        $entity->update($validated);
+
+        return redirect()->route('manage.nationality.index')->with('success', 'Nationality updated successfully.');
     }
 
+    public function destroy($id)
+    {
+        $entity = Nationality::findOrFail($id);
+        $entity->delete();
+
+        return redirect()->route('manage.nationality.index')->with('success', 'Nationality deleted successfully.');
+    }
+
+    public function show($id)
+    {
+        $entity = Nationality::findOrFail($id);
+
+        return view('manage.nationalities.show', [
+            'pageTitle' => 'Nationality Details',
+            'entity' => $entity,
+        ]);
+    }
 }

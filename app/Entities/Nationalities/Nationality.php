@@ -2,7 +2,7 @@
 
 namespace App\Entities\Nationalities;
 
-use EMedia\Formation\Entities\GeneratesFields;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 

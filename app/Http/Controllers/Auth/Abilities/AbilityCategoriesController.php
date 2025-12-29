@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Auth\Abilities;
 
 use App\Entities\Auth\AbilityCategoryRepository;
-use EMedia\MultiTenant\Facades\TenantManager;
+use App\Entities\Auth\AbilityRepository;
+
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -24,31 +25,15 @@ class AbilityCategoriesController extends Controller
 	public function __construct(Guard $auth)
 	{
 		$this->auth = $auth;
-		$this->abilityRepository = app(config('oxygen.abilityRepository'));
-		$this->roleRepository = app(config('oxygen.roleRepository'));
+		$this->abilityRepository = new AbilityRepository();
+		$this->roleRepository = new \Silber\Bouncer\Database\Role();
 		$this->abilityCategoryRepository = new AbilityCategoryRepository();
-
-		if (TenantManager::multiTenancyIsActive()) $this->tenantRepository = app(config('auth.tenantRepository'));
 
 		// access control
 		// view, create -> admin/super admin
 		// edit, delete -> super admin
-		$this->middleware('auth.acl:permissions[view-permissions]', ['only' => [
-			'index'
-		]]);
-
-		$this->middleware('auth.acl:permissions[add-permissions]', ['only' => [
-			'create', 'store'
-		]]);
-
-		$this->middleware('auth.acl:permissions[edit-permissions]', ['only' => [
-			'edit', 'update', 'editRoleAbilities', 'updateRoleAbilities'
-		]]);
-
-		$this->middleware('auth.acl:permissions[delete-permissions]', ['only' => [
-			'destroy'
-		]]);
-
+        // Middleware removed as auth.acl is deprecated.
+        // Implement standard policies or gates here if needed.
 	}
 
 	/**
@@ -59,13 +44,13 @@ class AbilityCategoriesController extends Controller
 	public function index()
 	{
 		$allItems = $this->abilityCategoryRepository->paginate(20, ['abilities']);
-		return view('oxygen::ability-categories.index', compact('allItems'));
+		return view('manage.ability-categories.index', compact('allItems'));
 	}
 
 	public function create()
 	{
 		$item = $this->abilityCategoryRepository->newModel();
-		return view('oxygen::ability-categories.edit', compact('item'));
+		return view('manage.ability-categories.edit', compact('item'));
 	}
 
 	protected function validateRequest($request)
@@ -157,7 +142,7 @@ class AbilityCategoriesController extends Controller
 	public function edit($id)
 	{
 		$item = $this->abilityCategoryRepository->find($id, ['abilities']);
-		return view('oxygen::ability-categories.edit', compact('item'));
+		return view('manage.ability-categories.edit', compact('item'));
 	}
 
 	public function update(Request $request, $id)
@@ -196,7 +181,7 @@ class AbilityCategoriesController extends Controller
 
 		$currentAbilities = Arr::pluck($role->abilities->toArray(), 'name');
 
-		return view('oxygen::abilities.abilities-editRoleAbilities', compact('abilityCategories', 'currentAbilities', 'role'));
+		return view('manage.abilities.abilities-editRoleAbilities', compact('abilityCategories', 'currentAbilities', 'role'));
 
 	}
 

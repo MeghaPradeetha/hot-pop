@@ -57,23 +57,23 @@ import Swal from 'sweetalert2/dist/sweetalert2.js'
 // Xl       > 1200px
 
 // setup base objects
-window._oxygen = window._oxygen || {};
+window._app = window._app || {};
 
 // set defaults
-if (window._oxygen.sidebar_status === undefined) {
+if (window._app.sidebar_status === undefined) {
 	// set version - only use integers. Increase for breaking changes
-	window._oxygen.version = 1;
+	window._app.version = 1;
 
 	// store visibility
-	window._oxygen.sidebar_visible = true;
+	window._app.sidebar_visible = true;
 
 	// type of sidebar
-	window._oxygen.sidebar_status = 'normal';
+	window._app.sidebar_status = 'normal';
 }
 
 // define functions
-if (window._oxygen.fn === undefined) {
-	window._oxygen.fn = {
+if (window._app.fn === undefined) {
+	window._app.fn = {
 
 		/*
 		 |-----------------------------------------------------------
@@ -85,12 +85,12 @@ if (window._oxygen.fn === undefined) {
 				return false;
 			}
 
-			let data = Object.assign({}, window._oxygen);
+			let data = Object.assign({}, window._app);
 
 			// remove functions, because we only want to save the data
 			delete(data.fn);
 
-			localStorage.setItem('_oxygen', JSON.stringify(data));
+			localStorage.setItem('_app_state', JSON.stringify(data));
 
 			// console.log('saveLocalState()', data);
 		},
@@ -105,22 +105,22 @@ if (window._oxygen.fn === undefined) {
 				return false;
 			}
 
-			if (!localStorage.hasOwnProperty('_oxygen')) {
+			if (!localStorage.hasOwnProperty('_app_state')) {
 				return false;
 			}
 
-			let data = JSON.parse(localStorage.getItem('_oxygen'));
+			let data = JSON.parse(localStorage.getItem('_app_state'));
 			if (!data.hasOwnProperty('version')) {
 				return false;
 			}
 
 			// copy the values
 			for (let key in data) {
-				window._oxygen[key] = data[key];
+				window._app[key] = data[key];
 			}
 
-			window._oxygen.fn.refreshSidebar();
-			// console.log('loadLocalState()', window._oxygen);
+			window._app.fn.refreshSidebar();
+			// console.log('loadLocalState()', window._app);
 		},
 
 
@@ -141,12 +141,12 @@ if (window._oxygen.fn === undefined) {
 
 		// update the arrow direction
 		updateArrowDirection() {
-			if (window._oxygen.sidebar_visible === false) {
-				window._oxygen.fn.showRightArrow();
-			} else if (window._oxygen.sidebar_status === 'mini') {
-				window._oxygen.fn.showRightArrow();
-			} else if (window._oxygen.sidebar_status === 'normal') {
-				window._oxygen.fn.showLeftArrow();
+			if (window._app.sidebar_visible === false) {
+				window._app.fn.showRightArrow();
+			} else if (window._app.sidebar_status === 'mini') {
+				window._app.fn.showRightArrow();
+			} else if (window._app.sidebar_status === 'normal') {
+				window._app.fn.showLeftArrow();
 			}
 		},
 
@@ -156,19 +156,19 @@ if (window._oxygen.fn === undefined) {
 		 |-----------------------------------------------------------
 		 */
 		refreshSidebar() {
-			if (window._oxygen.sidebar_status === 'mini') {
+			if (window._app.sidebar_status === 'mini') {
 				$('#sidebar').removeClass('normal-sidebar').addClass('mini-sidebar');
 				// by default, the `normal` sidebar will be displayed
-				// } else if (window._oxygen.sidebar_status === 'normal') {
+				// } else if (window._app.sidebar_status === 'normal') {
 				//	$('#sidebar').removeClass('mini-sidebar').addClass('normal-sidebar');
 			}
 
 			// by default, the sidebar will be open, so no need to update that
-			if (!window._oxygen.sidebar_visible) {
+			if (!window._app.sidebar_visible) {
 				$('#sidebar').addClass('d-none');
 			}
 
-			window._oxygen.fn.updateArrowDirection();
+			window._app.fn.updateArrowDirection();
 		},
 
 		// show mini sidebar
@@ -176,9 +176,9 @@ if (window._oxygen.fn === undefined) {
 			if (moveSidebar) {
 				$('#sidebar').removeClass('normal-sidebar').addClass('mini-sidebar');
 			}
-			window._oxygen.fn.showRightArrow();
-			window._oxygen.sidebar_status = 'mini';
-			window._oxygen.sidebar_visible = true;
+			window._app.fn.showRightArrow();
+			window._app.sidebar_status = 'mini';
+			window._app.sidebar_visible = true;
 		},
 
 		// show normal sidebar
@@ -186,9 +186,9 @@ if (window._oxygen.fn === undefined) {
 			if (moveSidebar) {
 				$('#sidebar').addClass('normal-sidebar').removeClass('d-none').removeClass('mini-sidebar');
 			}
-			window._oxygen.fn.showLeftArrow();
-			window._oxygen.sidebar_status = 'normal';
-			window._oxygen.sidebar_visible = true;
+			window._app.fn.showLeftArrow();
+			window._app.sidebar_status = 'normal';
+			window._app.sidebar_visible = true;
 		},
 
 		/*
@@ -198,18 +198,18 @@ if (window._oxygen.fn === undefined) {
 		 */
 		// show/hide sidebar
 		toggleSidebarVisibility() {
-			if (window._oxygen.sidebar_visible) {
+			if (window._app.sidebar_visible) {
 				// when visible, hide it
 				$('#sidebar').addClass('d-none');
-				window._oxygen.sidebar_visible = false;
+				window._app.sidebar_visible = false;
 			} else {
 				// when hidden, reveal it
 				$('#sidebar').removeClass('d-none');
-				window._oxygen.sidebar_visible = true;
+				window._app.sidebar_visible = true;
 			}
 
-			window._oxygen.fn.updateArrowDirection();
-			window._oxygen.fn.saveLocalState();
+			window._app.fn.updateArrowDirection();
+			window._app.fn.saveLocalState();
 		},
 
 		// toggle sidebar type
@@ -222,20 +222,20 @@ if (window._oxygen.fn === undefined) {
 			// $el.outerWidth($el.outerWidth);
 
 			// if it's not visible, show it first
-			if (!window._oxygen.sidebar_visible) {
-				window._oxygen.fn.toggleSidebarVisibility();
+			if (!window._app.sidebar_visible) {
+				window._app.fn.toggleSidebarVisibility();
 			}
 
-			if (window._oxygen.sidebar_status === 'normal') {
-				window._oxygen.fn.showMiniSidebar();
-			} else if (window._oxygen.sidebar_status === 'mini') {
-				window._oxygen.fn.showNormalSidebar();
+			if (window._app.sidebar_status === 'normal') {
+				window._app.fn.showMiniSidebar();
+			} else if (window._app.sidebar_status === 'mini') {
+				window._app.fn.showNormalSidebar();
 			} else {
 				// console.log('Unknown status');
-				// console.log(window._oxygen.sidebar_status);
+				// console.log(window._app.sidebar_status);
 			}
 
-			window._oxygen.fn.saveLocalState();
+			window._app.fn.saveLocalState();
 		}
 	};
 }
@@ -248,7 +248,7 @@ if (window._oxygen.fn === undefined) {
 $(document).ready(function () {
 
 	// load state parameters
-	window._oxygen.fn.loadLocalState();
+	window._app.fn.loadLocalState();
 
 	// confirmation
 	$('.js-confirm').on('submit', function (e) {
@@ -304,11 +304,11 @@ $(document).ready(function () {
 
 	// collapse sidebar
 	$('.js-toggle-right-mini-sidebar').on('click', function (e) {
-		window._oxygen.fn.toggleSidebar();
+		window._app.fn.toggleSidebar();
 	});
 
 	// set sidebar button arrows
 	$('.js-toggle-right-sidebar').on('click', function () {
-		window._oxygen.fn.toggleSidebarVisibility();
+		window._app.fn.toggleSidebarVisibility();
 	});
 });

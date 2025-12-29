@@ -2,7 +2,7 @@
 
 namespace App\Entities\InterestLists;
 
-use EMedia\Formation\Entities\GeneratesFields;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 

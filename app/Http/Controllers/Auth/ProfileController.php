@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Entities\Nationalities\Nationality;
 use App\Entities\Personalities\Personality;
 use App\Entities\InterestLists\InterestList;
-// use EMedia\Http\Controllers\Auth\UpdatesUsers;
+// use Hotpop\Http\Controllers\Auth\UpdatesUsers;
 
 class ProfileController extends Controller
 {

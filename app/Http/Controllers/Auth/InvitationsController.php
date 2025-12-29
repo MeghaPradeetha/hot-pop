@@ -3,11 +3,9 @@
 
 namespace App\Http\Controllers\Auth;
 
-use EMedia\Http\Controllers\Auth\InvitationsController as OxygenInvitationsController;
+use App\Http\Controllers\Controller;
 
-class InvitationsController extends OxygenInvitationsController
+class InvitationsController extends Controller
 {
-
-
-
+    // Implementation can be added here if needed
 }

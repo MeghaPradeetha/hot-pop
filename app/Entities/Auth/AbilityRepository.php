@@ -9,7 +9,7 @@ class AbilityRepository extends BaseRepository
 
 	public function __construct()
 	{
-		$model = app(config('oxygen.abilityModel'));
+		$model = new \App\Entities\Auth\Ability();
 		parent::__construct($model);
 	}
 

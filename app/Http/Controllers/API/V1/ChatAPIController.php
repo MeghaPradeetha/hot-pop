@@ -7,17 +7,14 @@ use App\Events\BlockUser;
 use App\Events\MessageRead;
 use Carbon\Carbon;
 use DB;
-use EMedia\Api\Docs\Param;
 use App\Entities\Chats\Chat;
 use App\Entities\Files\File;
-use EMedia\Api\Docs\APICall;
 use Illuminate\Http\Request;
 use App\Events\NewChatMessage;
 use Illuminate\Support\Facades\Log;
 use App\Entities\ChatRooms\ChatRoom;
 use Illuminate\Support\Facades\Storage;
 use App\Entities\ChatReports\ChatReport;
-use EMedia\Devices\Auth\DeviceAuthenticator;
 use App\Entities\ChatRooms\ChatRoomRepository;
 
 class ChatAPIController extends APIBaseController
@@ -33,14 +30,6 @@ class ChatAPIController extends APIBaseController
 	 */
 	public function chatUsers(Request $request)
 	{
-		document(function ()
-		{
-			return (new APICall())
-				->setGroup('Chat')
-				->setName('Chat User List')
-				->setSuccessObject(ChatRoom::class);
-		});
-
 		$user = \Illuminate\Support\Facades\Auth::user();
 
 		$chat_rooms = $this->repo->getUserRoomList($user->id);
@@ -48,7 +37,7 @@ class ChatAPIController extends APIBaseController
 
 		$chat_rooms = $chat_rooms->sortByDesc('last_message_created');
 
-		return response()->apiSuccess($chat_rooms, 'success');
+		return $this->respondSuccess($chat_rooms, 'success');
 	}
 
 	/**
@@ -56,19 +45,7 @@ class ChatAPIController extends APIBaseController
 	 */
 	public function store(Request $request)
 	{
-		document(function ()
-		{
-			return (new APICall())
-				->setGroup('Chat')
-				->setName('Send Chat Message')
-				->hasFileUploads()
-				->setParams([
-					(new Param('receiver_id', 'number', 'Message Receiver ID')),
-					(new Param('message', 'string', 'Message'))->optional(),
-					(new Param('image', 'file', 'Image'))->optional()
-				])
-				->setSuccessObject(Chat::class);
-		});
+
 
 		$user = \Illuminate\Support\Facades\Auth::user();
 
@@ -83,7 +60,7 @@ class ChatAPIController extends APIBaseController
 
 		// Check block status
 		if ($chat_room && $chat_room->block_status) {
-			return response()->apiError('You are blocked by this user');
+			return $this->respondError('You are blocked by this user');
 		}
 
 		if ($request->hasFile('image')) {
@@ -111,7 +88,7 @@ class ChatAPIController extends APIBaseController
 		}
 
 		if (!$message) {
-			return response()->apiError('Message is required');
+			return $this->respondError('Message is required');
 		}
 
 		if (!$chat_room) {
@@ -128,7 +105,7 @@ class ChatAPIController extends APIBaseController
 
 		event(new NewChatMessage($user->id, $request->receiver_id, $chat_room->id));
 
-		return response()->apiSuccess($chat, 'success');
+		return $this->respondSuccess($chat, 'success');
 	}
 
 	/**
@@ -137,24 +114,14 @@ class ChatAPIController extends APIBaseController
 	 */
 	public function chatLists(Request $request)
 	{
-		document(function ()
-		{
-			return (new APICall())
-				->setGroup('Chat')
-				->setName('Chat List')
-				->setParams([
-					(new Param('chat_room_id', 'number', 'Chat Room ID')),
-					(new Param('page', 'number', 'Page Number'))
-				])
-				->setSuccessPaginatedObject(Chat::class);
-		});
+
 
 		$user = \Illuminate\Support\Facades\Auth::user();
 
 
 		$chat_room = ChatRoom::find($request->chat_room_id);
 		if (!$chat_room) {
-			return response()->apiError('Chat room not found');
+			return $this->respondError('Chat room not found');
 		}
 
 		// update read status
@@ -206,7 +173,7 @@ class ChatAPIController extends APIBaseController
 		//     }
 		// }
 
-		return response()->apiSuccessPaginated($message_list, 'success');
+		return $this->respondSuccess($message_list, 'success');
 	}
 
 	/**
@@ -214,15 +181,7 @@ class ChatAPIController extends APIBaseController
 	 */
 	public function chatRead(Request $request)
 	{
-		document(function ()
-		{
-			return (new APICall())
-				->setGroup('Chat')
-				->setName('Chat Read')
-				->setParams([
-					(new Param('chat_room_id', 'number', 'Chat Room ID'))
-				]);
-		});
+
 
 		$user = \Illuminate\Support\Facades\Auth::user();
 
@@ -241,7 +200,7 @@ class ChatAPIController extends APIBaseController
 
 		event(new MessageRead($senderId, $user->id, 1));
 
-		return response()->apiSuccess(null, 'success');
+		return $this->respondSuccess(null, 'success');
 	}
 
 	/**
@@ -249,16 +208,7 @@ class ChatAPIController extends APIBaseController
 	 */
 	public function chatBlock(Request $request)
 	{
-		document(function ()
-		{
-			return (new APICall())
-				->setGroup('Chat')
-				->setName('Block Chat User')
-				->setParams([
-					(new Param('block_user_id', 'number', 'Block User ID')),
-					(new Param('block_status', 'number', 'Block Status 0 or 1'))
-				]);
-		});
+
 
 		$user = \Illuminate\Support\Facades\Auth::user();
 
@@ -283,7 +233,7 @@ class ChatAPIController extends APIBaseController
 		// Notify
 		event(new BlockUser($request->block_user_id, $user->id));
 
-		return response()->apiSuccess(null, 'User blocked successfully');
+		return $this->respondSuccess(null, 'User blocked successfully');
 
 	}
 
@@ -292,15 +242,7 @@ class ChatAPIController extends APIBaseController
 	 */
 	public function destroy(Request $request)
 	{
-		document(function ()
-		{
-			return (new APICall())
-				->setGroup('Chat')
-				->setName('Delete Chat Message')
-				->setParams([
-					(new Param('chat_id', 'number', 'Chat Message ID'))
-				]);
-		});
+
 
 		$user = \Illuminate\Support\Facades\Auth::user();
 
@@ -311,13 +253,13 @@ class ChatAPIController extends APIBaseController
 		$chat = Chat::findOrFail($request->chat_id);
 
 		if ($chat->sender_id != $user->id) {
-			return response()->apiError('You are not authorized to delete this message');
+			return $this->respondError('You are not authorized to delete this message');
 		}
 
 		$chat->delete_for_me = Carbon::now();
 		$chat->save();
 
-		return response()->apiSuccess(null, 'success');
+		return $this->respondSuccess(null, 'success');
 	}
 
 	/**
@@ -326,17 +268,7 @@ class ChatAPIController extends APIBaseController
 	 */
 	public function updateSetting(Request $request)
 	{
-		document(function ()
-		{
-			return (new APICall())
-				->setGroup('Chat')
-				->setName('Update Chat Settings')
-				->setParams([
-					(new Param('online_status', 'number', 'Online Status 0 or 1')),
-					(new Param('read_receipts', 'number', 'Read Receipts 0 or 1'))
-				])
-				->setSuccessObject(app('oxygen')::getUserClass());
-		});
+
 
 		$user = \Illuminate\Support\Facades\Auth::user();
 
@@ -345,23 +277,12 @@ class ChatAPIController extends APIBaseController
 			'read_receipts' => $request->read_receipts
 		]);
 
-		return response()->apiSuccess($user, 'success');
+		return $this->respondSuccess($user, 'success');
 	}
 
 	public function makeReport(Request $request)
 	{
-		document(function ()
-		{
-			return (new APICall())
-				->setGroup('Chat')
-				->setName('Add Chat Report')
-				->setParams([
-					(new Param('reported_user', 'number', 'User ID')),
-					(new Param('reason', 'string', 'Reason for Report')),
-					(new Param('comments', 'string', 'Explaination'))
-				])
-				->setSuccessObject(ChatReport::class);
-		});
+
 
 		$user = \Illuminate\Support\Facades\Auth::user();
 
@@ -375,7 +296,7 @@ class ChatAPIController extends APIBaseController
 
 		$report = ChatReport::create($validateData);
 
-		return response()->apiSuccess($report, 'success');
+		return $this->respondSuccess($report, 'success');
 	}
 
 }

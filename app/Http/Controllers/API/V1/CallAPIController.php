@@ -3,18 +3,14 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Models\User;
-use EMedia\Api\Docs\Param;
 use App\Events\AcceptEvent;
 use App\Events\IncomingCall;
-use EMedia\Api\Docs\APICall;
 use Illuminate\Http\Request;
 use App\Services\AgoraService;
 use App\Services\FirebaseService;
-use App\Http\Controllers\Controller;
 use App\Notifications\VoipPushNotification;
-use EMedia\Devices\Auth\DeviceAuthenticator;
 
-class CallAPIController extends Controller
+class CallAPIController extends APIBaseController
 {
     protected $agoraTokenService;
 
@@ -25,27 +21,12 @@ class CallAPIController extends Controller
 
     public function getToken(Request $request)
     {
-        document(function ()
-        {
-            return (new APICall)
-                ->setGroup('Token')
-                ->setName('Genrate Token')
-                ->setParams([
-                        // (new Param('channel_name', 'String', 'channel name'))->optional(),
-                    (new Param('reciver_id', 'String', 'user id')),
-                    (new Param('call_type', 'String', 'audio/video')),
-                ])
-                ->setErrorExample('{
-                    "payload": null,
-                    "message": "Validation success",
-                    "result": true
-                }');
-        });
+
 
         $authorizedUser = \Illuminate\Support\Facades\Auth::user();
         $user = User::find($request->reciver_id);
         if (!$user) {
-            return response()->apiError('Receive User not found', 404);
+            return $this->respondError('Receive User not found', 404);
         }
 
         $uid = $request->input('uid', 0);
@@ -89,7 +70,7 @@ class CallAPIController extends Controller
         // // $reciver->notify(new VoipPushNotification($name, $status, $roomType, $profilePic, $callType,$channelName,$token,$user));
 
 
-        return response()->apiSuccess([
+        return $this->respondSuccess([
             'token'        => $token,
             'channel_name' => $channelName,
         ]);
@@ -102,21 +83,7 @@ class CallAPIController extends Controller
      */
     public function answer(Request $request)
     {
-        document(function ()
-        {
-            return (new APICall)
-                ->setGroup('Call')
-                ->setName('Answer Call')
-                ->setParams([
-                    (new Param('reciver_id', 'String', 'user id comma seprated array')),
-                    (new Param('is_accept', 'String', '0/1')),
-                ])
-                ->setErrorExample('{
-                    "payload": null,
-                    "message": "Validation success",
-                    "result": true
-                }');
-        });
+
 
         $auth_user = \Illuminate\Support\Facades\Auth::user();
         $notify_user_id = $request->reciver_id;

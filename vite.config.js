@@ -14,7 +14,7 @@ export default defineConfig({
 				'resources/js/backend.js',
 				'resources/js/add-users-to-group.js',
 
-				'resources/sass/oxygen/bootstrap.scss',
+				'resources/sass/bootstrap.scss',
 				'resources/sass/public.scss',
 				'resources/sass/main.scss',
 				'resources/sass/backend.scss',

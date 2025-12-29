@@ -4,7 +4,7 @@
 namespace App\Http\Controllers\Manage;
 
 
-class ManageFilesController extends \\App\\Http\\Controllers\\Controller
+class ManageFilesController extends \App\Http\Controllers\Controller
 {
 
 	// This is the default upload disk. You may change this to another disk.
@@ -18,7 +18,7 @@ class ManageFilesController extends \\App\\Http\\Controllers\\Controller
 	 * @param $uuid
 	 *
 	 * @return mixed
-	 * @throws \EMedia\FileControl\Exceptions\FailedToResolvePathException
+	 * @throws \Hotpop\FileControl\Exceptions\FailedToResolvePathException
 	 */
 	public function publicView($uuid)
 	{
@@ -32,7 +32,7 @@ class ManageFilesController extends \\App\\Http\\Controllers\\Controller
 			if (!$user) {
 				// handle api requests
 				if (request()->header('x-api-key')) {
-					$user = \EMedia\Devices\Auth\\Illuminate\Support\Facades\Auth::user();
+					$user = \Illuminate\Support\Facades\Auth::user();
 				}
 			}
 			if (!$user) abort(401);

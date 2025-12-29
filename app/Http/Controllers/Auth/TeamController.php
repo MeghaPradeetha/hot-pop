@@ -3,11 +3,9 @@
 
 namespace App\Http\Controllers\Auth;
 
-use EMedia\Http\Controllers\Auth\TeamController as OxygenTeamController;
+use App\Http\Controllers\Controller;
 
-class TeamController extends OxygenTeamController
+class TeamController extends Controller
 {
-
-
-
+    // Implementation can be added here if needed
 }

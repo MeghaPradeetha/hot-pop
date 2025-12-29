@@ -3,7 +3,7 @@
 namespace App\Entities\Inquiries;
 
 use App\Models\User;
-use EMedia\Formation\Entities\GeneratesFields;
+use Hotpop\Formation\Entities\GeneratesFields;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 

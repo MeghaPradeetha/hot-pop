@@ -2,59 +2,84 @@
 
 namespace App\Http\Controllers\Manage;
 
-use Illuminate\Http\Request;
+use App\Entities\SubscriptionPlans\SubscriptionPlan;
 use App\Http\Controllers\Controller;
-use EMedia\Formation\Builder\Formation;
-use App\Entities\SubscriptionPlans\SubscriptionPlansRepository;
+use Illuminate\Http\Request;
 
 class SubscriptionPlanController extends Controller
 {
-
-    // Uncomment this line if you're going to use Oxygen's Default Controller Methods
-
-    protected $repo;
-
-    public function __construct(SubscriptionPlansRepository $repo)
+    public function index()
     {
-        $this->repo = $repo;
+        $allItems = SubscriptionPlan::latest()->paginate(20);
 
-        $this->resourceEntityName = 'Subscription Plan';
-        $this->isDestroyAllowed = true;
+        return view('manage.subscription-plan.index', [
+            'pageTitle' => 'Subscription Plans',
+            'allItems' => $allItems,
+        ]);
     }
 
-    protected function getResourcePrefix()
+    public function create()
     {
-        return 'manage.subscription-plan';
+        return view('manage.subscription-plan.form', [
+            'pageTitle' => 'Add Subscription Plan',
+            'entity' => new SubscriptionPlan(),
+        ]);
     }
 
-    protected function getIndexRouteName($suffix = 'index'): string
+    public function store(Request $request)
     {
-        return 'manage.subs-plans.index';
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'plan_id' => 'required|string|max:255',
+            'price' => 'required|numeric',
+            'description' => 'nullable|string',
+        ]);
+
+        SubscriptionPlan::create($validated);
+
+        return redirect()->route('manage.subs-plans.index')->with('success', 'Plan created successfully.');
     }
 
-    /**
-     *
-     * This is the form shown when creating a new record.
-     *
-     * @param null $entity
-     *
-     * @return Formation
-     */
-    protected function getCreateForm($entity = null)
+    public function edit($id)
     {
-        return new Formation($entity);
+        $entity = SubscriptionPlan::findOrFail($id);
+        
+        return view('manage.subscription-plan.form', [
+            'pageTitle' => 'Edit Subscription Plan',
+            'entity' => $entity,
+        ]);
     }
 
-    /**
-     *
-     * This is the form shown when editing an existing record.
-     *
-     * @param null $entity
-     *
-     * @return Formation
-     */
-    protected function getEditForm($entity = null)
+    public function update(Request $request, $id)
     {
-        return new Formation($entity);
+        $entity = SubscriptionPlan::findOrFail($id);
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'plan_id' => 'required|string|max:255',
+            'price' => 'required|numeric',
+            'description' => 'nullable|string',
+        ]);
+
+        $entity->update($validated);
+
+        return redirect()->route('manage.subs-plans.index')->with('success', 'Plan updated successfully.');
+    }
+
+    public function destroy($id)
+    {
+        $entity = SubscriptionPlan::findOrFail($id);
+        $entity->delete();
+
+        return redirect()->route('manage.subs-plans.index')->with('success', 'Plan deleted successfully.');
+    }
+
+    public function show($id)
+    {
+        $entity = SubscriptionPlan::findOrFail($id);
+        return view('manage.subscription-plan.show', [
+            'pageTitle' => 'Plan Details',
+            'entity' => $entity,
+        ]);
     }
 }

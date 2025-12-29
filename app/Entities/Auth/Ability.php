@@ -2,11 +2,11 @@
 
 namespace App\Entities\Auth;
 
-use EMedia\Entities\Auth\SingleTenant\Ability as AbilityBase;
+use Illuminate\Database\Eloquent\Model;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
-class Ability extends AbilityBase
+class Ability extends Model
 {
 
 	use HasSlug;

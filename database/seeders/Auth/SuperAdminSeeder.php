@@ -8,7 +8,7 @@ class SuperAdminSeeder extends Seeder
 {
     public function run()
     {
-        $userModel = app('oxygen')::makeUserModel();
+        $userModel = User::class;
 
         $adminData = [
             'name'     => 'Super Admin',

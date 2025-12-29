@@ -2,60 +2,46 @@
 
 namespace App\Http\Controllers\Manage;
 
-use App\Entities\Reports\ReportsRepository;
+use App\Entities\Reports\Report; // Correct Model Namespace
 use App\Http\Controllers\Controller;
-use EMedia\Formation\Builder\Formation;
+use Illuminate\Http\Request;
 
 class ReportsController extends Controller
 {
-
-
-	// Uncomment this line if you're going to use Oxygen's Default Controller Methods
-
-	protected $repo;
-
-	public function __construct(ReportsRepository $repo)
-	{
-		$this->repo = $repo;
-
-		$this->resourceEntityName = 'Report';
-        $this->isDestroyAllowed = true;
-	}
-
-    protected function getResourcePrefix()
+    public function index(Request $request)
     {
-        return 'manage.reports';
+        $query = Report::with(['user', 'reportedUser']);
+
+        if ($request->has('q')) {
+            $search = $request->q;
+            $query->whereHas('user', function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+
+        $allItems = $query->latest()->paginate(20);
+
+        return view('manage.reports.index', [
+            'pageTitle' => 'Manage Reports',
+            'allItems' => $allItems,
+        ]);
     }
 
-	protected function getIndexRouteName($suffix = 'index'): string
-	{
-		return 'manage.reports.index';
-	}
-
-    /**
-     *
-     * This is the form shown when creating a new record.
-     *
-     * @param null $entity
-     *
-     * @return Formation
-     */
-    protected function getCreateForm($entity = null)
+    public function show($id)
     {
-        return new Formation($entity);
+        $entity = Report::with(['user', 'reportedUser'])->findOrFail($id);
+        return view('manage.reports.show', [
+            'pageTitle' => 'Report Details',
+            'entity' => $entity,
+        ]);
     }
 
-    /**
-     *
-     * This is the form shown when editing an existing record.
-     *
-     * @param null $entity
-     *
-     * @return Formation
-     */
-    protected function getEditForm($entity = null)
+    public function destroy($id)
     {
-        return new Formation($entity);
-    }
+        $entity = Report::findOrFail($id);
+        $entity->delete();
 
+        return redirect()->route('manage.reports.index')->with('success', 'Report deleted successfully.');
+    }
 }

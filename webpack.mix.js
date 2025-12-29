@@ -16,7 +16,7 @@ mix.setPublicPath('public_html/');
 mix.js('resources/js/public.js', 'js/dist')
     .js('resources/js/backend.js', 'js/dist')
 
-	.sass('resources/sass/oxygen/bootstrap.scss', 'css/dist/bootstrap.css')
+	.sass('resources/sass/bootstrap.scss', 'css/dist/bootstrap.css')
 	.sass('resources/sass/public.scss', 'css/dist/public.css')
     .sass('resources/sass/backend.scss', 'css/dist/backend.css')
 	.sass('resources/sass/auth.scss', 'css/dist/auth.css')

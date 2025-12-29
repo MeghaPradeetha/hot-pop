@@ -59,12 +59,12 @@ class Receive extends TwiML {
     }
 
     /**
-     * Add StoreMedia attribute.
+     * Add StorHotpop attribute.
      *
-     * @param bool $storeMedia Whether or not to store received media in the fax
+     * @param bool $storHotpop Whether or not to store received media in the fax
      *                         media store
      */
-    public function setStoreMedia($storeMedia): self {
-        return $this->setAttribute('storeMedia', $storeMedia);
+    public function setStorHotpop($storHotpop): self {
+        return $this->setAttribute('storHotpop', $storHotpop);
     }
 }

@@ -3,20 +3,15 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Models\User;
-use EMedia\Api\Docs\Param;
-use EMedia\Api\Docs\APICall;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Entities\ChatRooms\ChatRoom;
-use EMedia\Devices\Auth\DeviceAuthenticator;
 use App\Entities\ChatRooms\ChatRoomRepository;
 use App\Entities\ProfilePreferences\ProfilePreference;
-use EMedia\Entities\Traits\FiltersByLatLngTrait;
 use App\Entities\ProfilePreferences\ProfilePreferencesRepository;
 
 class HomeAPIController extends APIBaseController
 {
-	use FiltersByLatLngTrait;
 
 	public function __construct(protected ProfilePreferencesRepository $profilePreferencesRepository)
 	{
@@ -26,26 +21,7 @@ class HomeAPIController extends APIBaseController
 	 */
 	public function index(Request $request)
 	{
-		document(function ()
-		{
-			return (new APICall())
-				->setName('Home')
-				->setDescription('Get Profile Details for match')
-				->setParams([
-					(new Param('page'))->setDescription('Page Number')->optional(),
-					(new Param('gender'))->setDescription('Male, Female, Non-binary, All')->optional(),
-					(new Param('relationship_type'))->setDescription('Relationship, Keeping it casual, Friendship, Figuring out my relationship goals')->optional(),
-					(new Param('dating_preference'))->setDescription('Male, Female, Non-binary, All')->optional(),
-					(new Param('min_age', 'number'))->optional(),
-					(new Param('max_age', 'number'))->optional(),
-					(new Param('min_distance', 'number'))->optional(),
-					(new Param('max_distance', 'number'))->optional(),
-					(new Param('latitude'))->optional(),
-					(new Param('longitude'))->optional(),
-					(new Param('like_to_have_more_childran'))->setDescription('yes or no')->optional()
-				])
-				->setSuccessPaginatedObject(app('oxygen')::getUserClass());
-		});
+
 
 
 		$user = \Illuminate\Support\Facades\Auth::user();
@@ -104,20 +80,12 @@ class HomeAPIController extends APIBaseController
 
 		$profiles = $query->inRandomOrder()->paginate(10);
 
-		return response()->apiSuccessPaginated($profiles, 'sucesses');
+		return $this->respondSuccess($profiles, 'sucesses');
 	}
 
 	public function accept(Request $request)
 	{
-		document(function ()
-		{
-			return (new APICall())
-				->setName('Accept Profile')
-				->setDescription('Accept Profile')
-				->setParams([
-					(new Param('preferred_user_id'))->setDescription('Accept Profile ID')
-				]);
-		});
+
 
 		$user = \Illuminate\Support\Facades\Auth::user();
 		$preferred_user = User::findOrFail($request->preferred_user_id);
@@ -153,7 +121,7 @@ class HomeAPIController extends APIBaseController
 
 		}
 
-		return response()->apiSuccess([
+		return $this->respondSuccess([
 			'is_match' => $is_match,
 			'user'     => $preferred_user,
 		], 'sucesses');
@@ -161,13 +129,7 @@ class HomeAPIController extends APIBaseController
 
 	public function getMatchProfile(Request $request)
 	{
-		document(function ()
-		{
-			return (new APICall())
-				->setName('Get Match Profile')
-				->setDescription('Get Match Profile')
-				->setSuccessPaginatedObject(User::class);
-		});
+
 
 		$user = \Illuminate\Support\Facades\Auth::user();
 
@@ -193,32 +155,23 @@ class HomeAPIController extends APIBaseController
 			return $preferredUser;
 		});
 
-		return response()->apiSuccessPaginated($preferredUsers, 'sucesses');
+		return $this->respondSuccess($preferredUsers, 'sucesses');
 	}
 
 	public function unmatchProfile(Request $request)
 	{
-		document(function ()
-		{
-			return (new APICall())
-				->setName('Unmatch Profile')
-				->setDescription('unmatch Profile')
-				->setParams([
-					(new Param('preferred_user_id'))->setDescription('User Profile ID')
-				])
-				->setSuccessObject(app('oxygen')::getUserClass());
-		});
+
 
 		$user = \Illuminate\Support\Facades\Auth::user();
 
 		$preference = $user->preferences()->where('preferred_user_id', $request->preferred_user_id)->first();
 
 		if (!$preference) {
-			return response()->apiError('Profile not found', 404);
+			return $this->respondError('Profile not found', 404);
 		}
 
 		$preference->delete();
 
-		return response()->apiSuccess($user, 'sucesses');
+		return $this->respondSuccess($user, 'sucesses');
 	}
 }

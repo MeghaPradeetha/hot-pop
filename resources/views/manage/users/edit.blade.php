@@ -1,12 +1,14 @@
-@extends('layouts.app')
+@extends('layouts.admin')
+
+@section('title', 'Edit User')
 
 @section('content')
-<div class="container">
-    <div class="row mb-4">
-        <div class="col-12">
-            <h1>{{ $pageTitle }}</h1>
-        </div>
-    </div>
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-white py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Edit User: {{ $user->name }}</h6>
+            </div>
 
     <div class="card">
         <div class="card-body">
@@ -46,6 +48,8 @@
                 <button type="submit" class="btn btn-primary">Update User</button>
                 <a href="{{ route('manage.users.index') }}" class="btn btn-secondary">Cancel</a>
             </form>
+        </div>
+    </div>
         </div>
     </div>
 </div>

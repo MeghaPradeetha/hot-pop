@@ -2,20 +2,19 @@
 
 namespace App\Http\Controllers\API\V1\Auth;
 
+use App\Http\Controllers\API\V1\APIBaseController;
 use App\Models\User;
-use EMedia\Api\Docs\Param;
 use App\Entities\Files\File;
-use EMedia\Api\Docs\APICall;
 use Illuminate\Http\Request;
 use App\Services\FirebaseService;
 use App\Entities\Interests\Interest;
 use Illuminate\Support\Facades\Storage;
 use App\Entities\Nationalities\Nationality;
 use App\Entities\InterestLists\InterestList;
-use EMedia\Devices\Auth\DeviceAuthenticator;
+use App\Models\Device;
 use App\Entities\PushNotifications\SupportData;
 
-class ProfileController extends \EMedia\Http\Controllers\API\V1\Auth\ProfileController
+class ProfileController extends APIBaseController
 {
 
 	/**
@@ -26,35 +25,14 @@ class ProfileController extends \EMedia\Http\Controllers\API\V1\Auth\ProfileCont
 	 */
 	public function index()
 	{
-		document(function () {
-			return (new APICall)->setName('My Profile')
-				->setDescription('Get currently logged in user\'s profile')
-				->setSuccessObject(app('oxygen')::getUserClass());
-		});
-
 		$user = \Illuminate\Support\Facades\Auth::user();
 		$user->load('files', 'personality');
-		return response()->apiSuccess($user);
+		return $this->respondSuccess($user);
 	}
 
 	public function profileSetup01(Request $request)
 	{
-		document(function ()
-		{
-			return (new APICall)
-				->setName('Profile Setup01')
-				->setParams([
-					(new Param('name')),
-					(new Param('last_name')),
-					(new Param('gender'))->setDescription('Male, Female, Non-binary, Custom'),
-					(new Param('want_email_notify'))->setDescription('yes or no'),
-					(new Param('age', 'number')),
-					(new Param('location')),
-					(new Param('latitude')),
-					(new Param('longitude')),
-				])
-				->setSuccessObject(app('oxygen')::getUserClass());
-		});
+
 
 		$user = \Illuminate\Support\Facades\Auth::user();
 
@@ -83,21 +61,12 @@ class ProfileController extends \EMedia\Http\Controllers\API\V1\Auth\ProfileCont
 
 		FirebaseService::updateUser($user);
 
-		return response()->apiSuccess($user->refresh(), 'success');
+		return $this->respondSuccess($user->refresh(), 'success');
 	}
 
 	public function profileSetup02(Request $request)
 	{
-		document(function ()
-		{
-			return (new APICall)
-				->setName('Profile Setup Video')
-				->hasFileUploads()
-				->setParams([
-					'file|Video File|file',
-				])
-				->setSuccessObject(app('oxygen')::getUserClass());
-		});
+
 
 		$user = \Illuminate\Support\Facades\Auth::user();
 
@@ -127,21 +96,12 @@ class ProfileController extends \EMedia\Http\Controllers\API\V1\Auth\ProfileCont
 				'profile_setup_step' => User::PROFILE_INTRO
 			]);
 
-		return response()->apiSuccess($user->refresh(), 'success');
+		return $this->respondSuccess($user->refresh(), 'success');
 	}
 
 	public function profileSetupImages(Request $request)
 	{
-		document(function ()
-		{
-			return (new APICall)
-				->setName('Profile Setup Images')
-				->hasFileUploads()
-				->setParams([
-					'images|File Collection|array',
-				])
-				->setSuccessObject(app('oxygen')::getUserClass());
-		});
+
 
 		$user = \Illuminate\Support\Facades\Auth::user();
 
@@ -177,24 +137,12 @@ class ProfileController extends \EMedia\Http\Controllers\API\V1\Auth\ProfileCont
 
 		FirebaseService::updateUser($user);
 
-		return response()->apiSuccess($user->refresh(), 'success');
+		return $this->respondSuccess($user->refresh(), 'success');
 	}
 
 	public function profileSetup03(Request $request)
 	{
-		document(function ()
-		{
-			return (new APICall)
-				->setName('Profile Setup03')
-				->setParams([
-					(new Param('interests'))->setDescription('comma separated'),
-					(new Param('occupation')),
-					(new Param('hometown')),
-					(new Param('height', 'number')),
-					(new Param('nationality')),
-				])
-				->setSuccessObject(app('oxygen')::getUserClass());
-		});
+
 
 		$user = \Illuminate\Support\Facades\Auth::user();
 
@@ -225,24 +173,12 @@ class ProfileController extends \EMedia\Http\Controllers\API\V1\Auth\ProfileCont
 
 		$user->load('personality');
 
-		return response()->apiSuccess($user->refresh(), 'success');
+		return $this->respondSuccess($user->refresh(), 'success');
 	}
 
 	public function profileSetup04(Request $request)
 	{
-		document(function ()
-		{
-			return (new APICall)
-				->setName('Profile Setup04')
-				->setParams([
-					(new Param('relationship_type'))->setDescription('Relationship, Keeping it casual, Friendship, Figuring out my relationship goals'),
-					(new Param('dating_intentions'))->setDescription('Male, Female, Non-binary, All'),
-					(new Param('min_age', 'number', 'optional')),
-					(new Param('max_age', 'number', 'optional')),
-					(new Param('like_to_have_more_childran'))->setDescription('yes or no')->optional()
-				])
-				->setSuccessObject(app('oxygen')::getUserClass());
-		});
+
 
 		$user = \Illuminate\Support\Facades\Auth::user();
 
@@ -265,17 +201,12 @@ class ProfileController extends \EMedia\Http\Controllers\API\V1\Auth\ProfileCont
 
 		$user->load('personality');
 
-		return response()->apiSuccess($user->refresh(), 'success');
+		return $this->respondSuccess($user->refresh(), 'success');
 	}
 
 	public function profileComplete(Request $request)
 	{
-		document(function ()
-		{
-			return (new APICall)
-				->setName('Profile Complete')
-				->setSuccessObject(app('oxygen')::getUserClass());
-		});
+
 
 		$user = \Illuminate\Support\Facades\Auth::user();
 
@@ -286,20 +217,12 @@ class ProfileController extends \EMedia\Http\Controllers\API\V1\Auth\ProfileCont
 		//add free trial
 		// app(UsersRepository::class)->addFreeTrial($user);
 
-		return response()->apiSuccess($user->refresh(), 'success');
+		return $this->respondSuccess($user->refresh(), 'success');
 	}
 
 	public function show(Request $request)
 	{
-		document(function ()
-		{
-			return (new APICall)
-				->setName('Get Profile Details')
-				->setParams([
-					(new Param('user_id'))->setDescription('User ID'),
-				])
-				->setSuccessObject(app('oxygen')::getUserClass());
-		});
+
 
 		$request->validate([
 			'user_id' => 'required|exists:users,id'
@@ -310,7 +233,7 @@ class ProfileController extends \EMedia\Http\Controllers\API\V1\Auth\ProfileCont
 			'personality'
 		])->find($request->user_id);
 
-		return response()->apiSuccess($user, 'success');
+		return $this->respondSuccess($user, 'success');
 	}
 
 	/**
@@ -321,13 +244,6 @@ class ProfileController extends \EMedia\Http\Controllers\API\V1\Auth\ProfileCont
 	 */
 	public function delete(Request $request)
 	{
-		document(function ()
-		{
-			return (new APICall)
-				->setGroup('Profile')
-				->setName('Delete My Account');
-		});
-
 		$user = \Illuminate\Support\Facades\Auth::user();
 
 		$user->stripPIIDAndDelete();
@@ -335,25 +251,19 @@ class ProfileController extends \EMedia\Http\Controllers\API\V1\Auth\ProfileCont
 		if (!$user) {
 			return response()->json(['message' => 'User not found'], 404);
 		}
-		return response()->apiSuccess([], 'Account Deleted Successfully');
+		return $this->respondSuccess([], 'Account Deleted Successfully');
 	}
 
 	public function getSupportData(Request $request)
 	{
-		document(function ()
-		{
-			return (new APICall)
-				->setGroup('Profile')
-				->setName('Get Interest and Nationality')
-				->setSuccessObject(SupportData::class);
-		});
+
 
 		$data = [
 			'interests'   => InterestList::where('status', 'active')->pluck('name'),
 			'nationality' => Nationality::where('status', 'active')->pluck('name')
 		];
 
-		return response()->apiSuccess($data, 'sucesses');
+		return $this->respondSuccess($data, 'sucesses');
 	}
 
 

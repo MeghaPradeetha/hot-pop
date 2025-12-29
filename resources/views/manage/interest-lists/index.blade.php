@@ -1,74 +1,87 @@
-@extends('oxygen::layouts.master-dashboard')
+@extends('layouts.admin')
 
-@section('breadcrumbs')
-    {{ lotus()->breadcrumbs([
-        ['Dashboard', route('dashboard')],
-        // ['Change The Resource Name', route('<change here>')],
-        [$pageTitle, null, true],
-    ]) }}
-@stop
-
-@section('pageMainActions')
-    @include('oxygen::dashboard.partials.searchField')
-
-    @if ($canCreateEntities ?? false)
-        <a class="btn btn-success" href="{{ entity_resource_path() . '/create' }}"><em class="fas fa-plus-circle"></em> Add New</a>
-    @endif
-@stop
-
-{{-- DELETE THIS IF NOT USED
-@section('pageSummary')
-    <div>Content to be inserted at the bottom of the page</div>
-@stop
- --}}
+@section('title', 'Interest Lists')
 
 @section('content')
-    @include('oxygen::dashboard.partials.table-allItems', [
-        'tableHeader' => ['ID', 'Name', 'Status', 'Actions|text-end'],
-    ])
-
-    @foreach ($allItems as $item)
-        <tr>
-            <td>{{ $item->id }}</td>
-            <td>
-                <a href="{{ entity_resource_path() . '/' . $item->id }}" id="btn_view_{{ $item->id }}">{{ $item->name }}</a>
-            </td>
-            <td>
-                {{ $item->status }}
-            </td>
-            <td class="text-end">
-                <div class="btn-spaced">
-                    @if ($canEditEntities ?? false)
-                        <a class="btn btn-warning js-tooltip" href="{{ entity_resource_path() . '/' . $item->id . '/edit' }}" id="btn_edit_{{ $item->id }}" title="Edit"><em
-                                class="fa fa-edit"></em> Edit</a>
-                    @endif
-
-                    {{--
-                    <form action="{{ entity_resource_path() . '/' . $item->id }}"
-                          method="POST" class="form form-inline">
-                        {{ method_field('put') }}
-                        {{ csrf_field() }}
-                        <input type="hidden" name="is_completed" value="{{ $item->is_completed }}" />
-                        @if ($item->is_completed)
-                            <button class="btn btn-info js-tooltip"
-                                    title="Mark as Pending"><em class="fa fa-hourglass-half"></em></button>
-                        @else
-                            <button class="btn btn-success js-tooltip"
-                                    title="Mark as Complete"><em class="fa fa-check"></em></button>
-                        @endif
-                    </form>
-                    --}}
-
-                    @if (isset($isDestroyingEntityAllowed) && $isDestroyingEntityAllowed === true)
-                        <form action="{{ entity_resource_path() . '/' . $item->id }}" class="form form-inline js-confirm-delete" method="POST">
-                            {{ method_field('delete') }}
-                            {{ csrf_field() }}
-                            <button class="btn btn-danger js-tooltip" id="btn_delete_{{ $item->id }}" title="Delete"><em class="fa fa-times"></em> Delete</button>
-                        </form>
-                    @endif
-
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                <h6 class="m-0 font-weight-bold text-primary">Interest Lists</h6>
+                <a href="{{ route('manage.interests.create') }}" class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add New</a>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Status</th>
+                                <th class="text-end">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($allItems as $item)
+                            <tr>
+                                <td>{{ $item->id }}</td>
+                                <td>{{ $item->name }}</td>
+                                <td>
+                                    <span class="badge {{ $item->status === 'active' ? 'bg-success' : 'bg-secondary' }}">
+                                        {{ ucfirst($item->status) }}
+                                    </span>
+                                </td>
+                                <td class="text-end">
+                                    <a href="{{ route('manage.interests.show', $item->id) }}" class="btn btn-sm btn-info text-white"><i class="fas fa-eye"></i> View</a>
+                                    <a href="{{ route('manage.interests.edit', $item->id) }}" class="btn btn-sm btn-warning text-white"><i class="fas fa-edit"></i> Edit</a>
+                                    
+                                     <form action="{{ route('manage.interests.destroy', $item->id) }}" method="POST" class="d-inline-block delete-form">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="button" class="btn btn-sm btn-danger btn-delete"><i class="fas fa-trash"></i> Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            @empty
+                            <tr><td colspan="4" class="text-center py-3">No interest lists found.</td></tr>
+                            @endforelse
+                        </tbody>
+                    </table>
                 </div>
-            </td>
-        </tr>
-    @endforeach
-@stop
+            </div>
+             <div class="card-footer bg-white">
+                {{ $allItems->links() }}
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const deleteButtons = document.querySelectorAll('.btn-delete');
+        
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const form = this.closest('.delete-form');
+                
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
+    });
+</script>
+@endpush

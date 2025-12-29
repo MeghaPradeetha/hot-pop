@@ -207,9 +207,9 @@ class AcceptHeader
 
         // Ensure media vs. non-media consistency
         $isQueryMedia = str_contains($queryValue, '/');
-        $isRangeMedia = str_contains($rangeValue, '/');
+        $isRangHotpop = str_contains($rangeValue, '/');
 
-        if ($isQueryMedia !== $isRangeMedia) {
+        if ($isQueryMedia !== $isRangHotpop) {
             return false;
         }
 
@@ -274,9 +274,9 @@ class AcceptHeader
         $paramCount = \count($this->getMediaParams($item));
 
         $isQueryMedia = str_contains($queryValue, '/');
-        $isRangeMedia = str_contains($rangeValue, '/');
+        $isRangHotpop = str_contains($rangeValue, '/');
 
-        if (!$isQueryMedia && !$isRangeMedia) {
+        if (!$isQueryMedia && !$isRangHotpop) {
             return ('*' !== $rangeValue ? 2000 : 1000) + $paramCount;
         }
 

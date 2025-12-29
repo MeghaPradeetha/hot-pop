@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Entities\Inquiries\Inquiry;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
-use EMedia\AppSettings\Entities\Settings\Setting;
+use Hotpop\AppSettings\Entities\Settings\Setting;
 
 class PagesController extends Controller
 {
@@ -102,7 +102,7 @@ class PagesController extends Controller
 		}
 		$receiverEmails = [$webmaster];
 
-		Mail::send(['text' => 'oxygen::emails.text.contact-us'], $data, function ($mailMessage) use ($data, $receiverEmails)
+		Mail::send(['text' => 'emails.contact-us'], $data, function ($mailMessage) use ($data, $receiverEmails)
 		{
 			$mailMessage->to($receiverEmails)
 				->replyTo($data['sender_email'])

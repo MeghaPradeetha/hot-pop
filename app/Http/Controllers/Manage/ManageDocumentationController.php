@@ -63,11 +63,9 @@ class ManageDocumentationController
 			}
 		}
 
-		return view('oxygen::manage.documentation.index', [
-			'pageTitle' => 'API Documentation',
-			'paths' => $filteredPaths,
-			'apiKeys' => $apiKeys,
-		]);
+
+
+        return "Documentation Index Placeholder";
 	}
 
 }

@@ -3,13 +3,12 @@
 namespace App\Entities\Auth;
 
 use Cviebrock\EloquentSluggable\Sluggable;
-use Hotpop\OxygenFoundation\Scout\KeywordSearchable;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Searchable;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
-class AbilityCategory extends Model implements KeywordSearchable
+class AbilityCategory extends Model
 {
 
 	use Searchable;
@@ -25,15 +24,16 @@ class AbilityCategory extends Model implements KeywordSearchable
 		return SlugOptions::create()->generateSlugsFrom('name')->saveSlugsTo('slug');
 	}
 
-	public function getSearchableFields(): array
+	public function toSearchableArray()
 	{
 		return [
-			'name',
+			'name' => $this->name,
 		];
 	}
 
 	public function abilities()
 	{
-		return $this->hasMany(app(config('oxygen.abilityModel')));
+        // Assuming the standard Ability model is used. If there's a specific class, we should use that.
+		return $this->hasMany(\App\Entities\Auth\Ability::class);
 	}
 }
