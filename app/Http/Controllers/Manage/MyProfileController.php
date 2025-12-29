@@ -390,7 +390,7 @@ class MyProfileController extends Controller
     {
         $user = auth()->user();
         $results = uniqid();
-        $user->email = 'DELETED _' . $results;
+        $user->email = 'DELETED_' . $results;
         $user->deleted_at = Carbon::now();
         $user->update();
 

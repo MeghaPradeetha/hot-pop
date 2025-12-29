@@ -19,6 +19,9 @@ class ManageUsersController extends Controller
     {
         $query = User::query();
 
+        // Filter out deleted users by default
+        $query->whereNull('deleted_at');
+
         if ($request->has('q')) {
             $search = $request->q;
             $query->where(function($q) use ($search) {
@@ -64,7 +67,14 @@ class ManageUsersController extends Controller
     public function destroy($id)
     {
         $user = User::findOrFail($id);
-        $user->delete();
+        
+        // Anonymize user data instead of hard delete to avoid foreign key constraint errors
+        $results = uniqid();
+        $user->email = 'DELETED_' . $results;
+        $user->name = 'Deleted User';
+        $user->deleted_at = \Carbon\Carbon::now();
+        $user->save();
+        
         return redirect()->route('manage.users.index')->with('success', 'User deleted successfully.');
     }
 

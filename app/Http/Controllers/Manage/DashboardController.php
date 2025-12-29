@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Manage;
 
-use Hotpop\Devices\Entities\Devices\Device;
+use App\Models\Device;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Collection;
 
@@ -13,7 +13,7 @@ class DashboardController extends Controller
 	{
         // Data for Cards
         $totalUsers = \App\Models\User::count();
-        $totalDevices = \App\Entities\Devices\Device::count();
+        $totalDevices = Device::count();
         $newUsersLast7Days = \App\Models\User::where('created_at', '>=', now()->subDays(7))->count();
         $newUsersToday = \App\Models\User::whereDate('created_at', today())->count();
 
